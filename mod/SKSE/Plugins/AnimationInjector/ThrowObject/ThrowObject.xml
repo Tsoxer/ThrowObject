@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnimationSet version="6" id="ThrowObject">
+  <EventRegistry>
+    <Event name="ThrowObjectGrab">
+      <Do op="modEvent" name="TO_MarkerGrab"/>
+    </Event>
+    <Event name="ThrowObjectRelease">
+      <Do op="modEvent" name="TO_MarkerRelease"/>
+    </Event>
+  </EventRegistry>
+  <Start event="TO_Pickup" to="PickUp"/>
+  <Start event="TO_Throw" to="Throw"/>
+  <Action id="PickUp" clip="Animations\ThrowObject\ThrowObject_PickUp.hkx" enter="0.12">
+    <Transition event="TO_Cancel" end="true"/>
+    <Do at="0.0" op="modEvent" name="TO_PickupStarted"/>
+    <Do at="1.5" op="modEvent" name="TO_MarkerPickupEnd"/>
+    <Exit at="end" blend="0.10"/>
+  </Action>
+  <Action id="Throw" clip="Animations\ThrowObject\ThrowObject_Throw.hkx" enter="0.10">
+    <Transition event="TO_Cancel" end="true"/>
+    <Do at="0.0" op="modEvent" name="TO_ThrowStarted"/>
+    <Do at="0.933333" op="modEvent" name="TO_MarkerThrowEnd"/>
+    <Exit at="end" blend="0.15"/>
+  </Action>
+</AnimationSet>

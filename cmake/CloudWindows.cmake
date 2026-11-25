@@ -1,0 +1,16 @@
+# Set THROW_OBJECT_LLVM and THROW_OBJECT_XWIN to the unpacked tool roots.
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_SYSTEM_PROCESSOR AMD64)
+set(CMAKE_CXX_COMPILER "$ENV{THROW_OBJECT_LLVM}/clang-cl")
+set(CMAKE_CXX_COMPILER_TARGET x86_64-pc-windows-msvc)
+set(CMAKE_LINKER "$ENV{THROW_OBJECT_LLVM}/lld-link")
+set(CMAKE_AR "$ENV{THROW_OBJECT_LLVM}/llvm-lib")
+set(CMAKE_RC_COMPILER "$ENV{THROW_OBJECT_LLVM}/llvm-rc")
+set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)
+set(sdk "$ENV{THROW_OBJECT_XWIN}/sdk")
+set(crt "$ENV{THROW_OBJECT_XWIN}/crt")
+set(CMAKE_CXX_FLAGS_INIT
+    "-imsvc \"${crt}/include\" -imsvc \"${sdk}/include/ucrt\" -imsvc \"${sdk}/include/um\" -imsvc \"${sdk}/include/shared\" -imsvc \"${sdk}/include/winrt\"")
+set(libs "/libpath:\"${crt}/lib/x86_64\" /libpath:\"${sdk}/lib/ucrt/x86_64\" /libpath:\"${sdk}/lib/um/x86_64\"")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "${libs}")
+set(CMAKE_SHARED_LINKER_FLAGS_INIT "${libs}")

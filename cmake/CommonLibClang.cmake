@@ -1,0 +1,33 @@
+# Pinned CommonLib uses capitalized GFx iterators in one template body.
+# MSVC defers the lookup but Clang diagnoses it while parsing the template.
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  set(hash_header "${commonlib_SOURCE_DIR}/include/RE/G/GHashSetBase.h")
+  file(READ "${hash_header}" original)
+  string(REPLACE "a_src.Begin()" "a_src.begin()" patched "${original}")
+  string(REPLACE "a_src.End()" "a_src.end()" patched "${patched}")
+  if(NOT original STREQUAL patched)
+    file(WRITE "${hash_header}" "${patched}")
+  endif()
+  set(pointer_header "${commonlib_SOURCE_DIR}/include/RE/B/BSTPointerAndFlags.h")
+  file(READ "${pointer_header}" original)
+  string(REPLACE "a_rhs.storage.address" "a_rhs._storage.address" patched "${original}")
+  if(NOT original STREQUAL patched)
+    file(WRITE "${pointer_header}" "${patched}")
+  endif()
+endif()
+
+# Windows import library names are case-insensitive. Match the SDK's lowercase
+# aliases when linking from a case-sensitive filesystem.
+if(CMAKE_CROSSCOMPILING AND CMAKE_HOST_UNIX)
+  foreach(property LINK_LIBRARIES INTERFACE_LINK_LIBRARIES)
+    get_target_property(libraries CommonLibSSE "${property}")
+    set(normalized)
+    foreach(library IN LISTS libraries)
+      if(library MATCHES "\\.[Ll][Ii][Bb]$")
+        string(TOLOWER "${library}" library)
+      endif()
+      list(APPEND normalized "${library}")
+    endforeach()
+    set_target_properties(CommonLibSSE PROPERTIES "${property}" "${normalized}")
+  endforeach()
+endif()

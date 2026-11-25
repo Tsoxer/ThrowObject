@@ -1,0 +1,14 @@
+{
+  "name": "throw-object-preview",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/viewer.js --bundle --format=esm --target=es2022 --minify --legal-comments=eof --outfile=dist/viewer.js"
+  },
+  "dependencies": {
+    "three": "0.183.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.3"
+  }
+}

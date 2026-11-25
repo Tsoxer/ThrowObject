@@ -1,0 +1,9 @@
+/build*/
+/exported/
+/releases/
+node_modules/
+__pycache__/
+*.pdb
+*.blend1
+/mod/**/*.hkx
+/mod/**/ThrowObject.dll

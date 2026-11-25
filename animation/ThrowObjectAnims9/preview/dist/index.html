@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Review the Throw Object animation keyframes, grip, and release timing.">
+  <title>ThrowObjectAnims9 · Animation Preview</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell top-inner">
+      <div class="brand">
+        <svg class="mark" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="10" fill="#183c39"/><path d="m18 8 8.5 5v10.1l-8.5 5-8.5-5V13L18 8Z M9.7 13.2l8.3 5 8.3-5 M18 18.2v9.5" fill="none" stroke="#91e5d4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span>Throw Object</span>
+      </div>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="intro">
+      <div>
+        <h1>Animation preview</h1>
+        <p>Review the pickup, right-hand grip, carry gaits, and overhand release.</p>
+      </div>
+      <div class="tags"><span>Skyrim SE / AE <b>1.6.1170</b></span><span>30 FPS</span></div>
+    </div>
+    <div class="workspace">
+      <section class="stage" aria-label="3D animation viewer">
+        <div id="viewport" aria-label="Interactive 3D mannequin"></div>
+        <div class="stage-label"><i></i><span id="scene-label">Hold Object</span></div>
+        <div class="stage-status" id="stage-status" role="status">Loading the 3D scene…</div>
+        <div class="stage-foot">
+          <div class="camera-hint">Drag to orbit · Scroll to zoom</div>
+          <div class="camera-group" role="group" aria-label="Camera presets">
+            <button type="button" data-camera="orbit" aria-pressed="true">Orbit</button>
+            <button type="button" data-camera="side" aria-pressed="false">Side</button>
+            <button type="button" data-camera="grip" aria-pressed="false">Grip</button>
+          </div>
+        </div>
+      </section>
+      <aside class="panel">
+        <div class="panel-section">
+          <h2>Animation</h2>
+          <div class="clip-list" role="group" aria-label="Animation selection">
+            <button type="button" class="clip" data-clip="pickup" aria-pressed="false"><span class="clip-icon" aria-hidden="true">◇</span><span><strong>Pick Up</strong><small>1.500 s · Then Hold</small></span></button>
+            <button type="button" class="clip" data-clip="hold" aria-pressed="true"><span class="clip-icon">↻</span><span><strong>Hold Object</strong><small>Loop · 2.000 s</small></span></button>
+            <button type="button" class="clip" data-clip="throw" aria-pressed="false"><span class="clip-icon">▷</span><span><strong>Throw Object</strong><small>One shot · 0.933 s</small></span></button>
+            <div class="gait-list" role="group" aria-label="Carry locomotion">
+              <button type="button" class="gait" data-clip="walk" aria-pressed="false"><strong>Walk</strong><small>1.200 s</small></button>
+              <button type="button" class="gait" data-clip="jog" aria-pressed="false"><strong>Jog</strong><small>0.800 s</small></button>
+              <button type="button" class="gait" data-clip="sprint" aria-pressed="false"><strong>Sprint</strong><small>0.600 s</small></button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section settings">
+          <h2>Preview settings</h2>
+          <label class="field" for="prop"><span>Placeholder</span><select id="prop"><option value="stone">Stone</option><option value="crate">Wooden block</option><option value="flask">Flask</option><option value="none">None</option></select></label>
+          <label class="field" for="speed"><span>Playback speed</span><select id="speed"><option value=".25">0.25×</option><option value=".5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+          <label class="field loop-field" for="loop"><span>Loop playback</span><input type="checkbox" id="loop" checked><span class="switch" aria-hidden="true"></span></label>
+        </div>
+        <button class="release-card" id="jump-release" type="button" aria-label="Jump to release frame">
+          <span class="release-pin" aria-hidden="true"></span><span><strong>Release event</strong><small id="release-spec">Frame 15 · 0.500 s</small></span><span class="release-key" aria-hidden="true">15</span>
+        </button>
+      </aside>
+    </div>
+    <section class="timeline" aria-label="Animation timeline">
+      <div class="transport">
+        <div class="transport-buttons" role="group" aria-label="Playback">
+          <button type="button" id="prev" class="icon-button" title="Previous frame (Left)" aria-label="Previous frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12m12 0-9-6 9-6z"/></svg></button>
+          <button type="button" id="play" class="icon-button play" title="Play (Space)" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-shape" d="m9 5 11 7-11 7z"/></svg></button>
+          <button type="button" id="next" class="icon-button" title="Next frame (Right)" aria-label="Next frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6v12M6 6l9 6-9 6z"/></svg></button>
+        </div>
+        <div class="readout"><output id="frame-number" for="scrub">00</output><span id="frame-total">/ 60</span><span class="frame-word">frames</span></div>
+        <output id="seconds" for="scrub" class="seconds">0.000 s</output>
+      </div>
+      <div class="track" id="track">
+        <div class="track-bed"><input aria-label="Current animation frame" type="range" id="scrub" min="0" max="60" value="0" step="1"><button type="button" id="timeline-release" class="timeline-release" title="Jump to release frame" hidden><span>Release</span></button><button type="button" id="timeline-grab" class="timeline-release" title="Jump to grab frame" hidden><span>Grab</span></button></div>
+        <div class="ticks" id="ticks" aria-hidden="true"></div>
+      </div>
+    </section>
+    <footer class="footer"><span>Original preview mannequin</span><span id="prop-status">Right hand · Attached</span></footer>
+  </main>
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>

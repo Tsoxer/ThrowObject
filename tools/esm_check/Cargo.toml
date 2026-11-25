@@ -1,0 +1,8 @@
+[package]
+name = "throw-object-esm-check"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+esplugin = { git = "https://github.com/Ortham/esplugin", rev = "f964f3895747362ea6ce4cbbea56f2a746c39319" }

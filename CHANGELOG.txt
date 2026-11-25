@@ -1,0 +1,293 @@
+THROW OBJECT
+Development changelog
+Started 11/21/2026
+Current release v0.0.15, 11/24/2026
+Author/Director/Tester: Tsoxer
+Programmer/Debugger: Codex (OpenAI)
+
+The project dates come from the original Blender and private preview records,
+the release packaging commits, and the supplied dates for v0.0.11 and v0.0.12. The Skyrim
+target throughout gameplay development is SE/AE Steam 1.6.1170.
+
+11/21/2026 — Original model and ThrowObjectAnims1
+------------------------------------------------
+- Built an original humanoid mannequin in Blender with procedurally generated
+  surfaces, clothing and materials, a skinned armature, articulated fingers,
+  and a right-hand attachment socket. Kept the mannequin and its source
+  separate from Skyrim's game assets.
+- Authored Hold Object and an overhand Throw Object at 30 FPS. Hold uses a
+  generic grip and a 60-frame loop. Throw starts from the held pose, winds up,
+  releases at frame 15, follows through and settles at frame 28. The left hand
+  stays free. Props are interchangeable.
+- Exported the actual Blender actions and skinned model to GLB. Built the
+  Three.js viewer with orbit, zoom, play/pause, looping, speed, frame scrub
+  and step, camera presets, prop selection, a release marker and a simulated
+  detach from the animated socket. Supplied a local preview and an
+  authenticated Anims1 preview.
+- Added reproducible Blender generation and PyNifly export scripts with
+  sample-count, pose, and event checks. Established the vanilla human
+  skeleton and idle as local inputs for the later native HKX export.
+
+11/21/2026 — ThrowObjectAnims2
+-----------------------------
+- Kept Anims1 as the original snapshot. Rebuilt the right arm in Hold and
+  Throw around a single-axis elbow hinge, separate forearm roll, and wrist
+  flexion and deviation. Revised the overhand motion and skin at the elbow.
+  Kept the hold grip, prop offset, preview controls, and release frame.
+- Checked joint lengths, bend angles, arm clearance, and loop continuity at
+  all 30 FPS keys and between keys. Reviewed the release and follow-through.
+- Added Carry Walk for slow movement, Carry Jog for normal running, and
+  Carry Sprint for full-speed sprinting. Each loop uses the same right-hand
+  grip. The left arm swings freely and the preview floor moves under the
+  in-place character. All three gait clips stayed under the Anims2 version.
+
+11/21/2026 — ThrowObjectAnims3
+-----------------------------
+- Copied Anims2. Added breathing, weight transfer, freer shoulder and arm
+  motion, smoother foot rolls, and steadier head movement. Refined the
+  wind-up and the free arm's counterbalance. Gave Jog and Sprint distinct
+  cadence and recovery while retaining root planting for Hold and Throw.
+
+11/21/2026 — ThrowObjectAnims4
+-----------------------------
+- Copied Anims3. Kept the exported Walk tracks. Reworked the Hold and Throw
+  knee bend planes to stop the visible twisting while the ankles stay
+  planted. Refined Jog and Sprint through weight acceptance, push-off,
+  ankle roll, swing-leg recovery, and carry-arm motion.
+
+11/21/2026 — ThrowObjectAnims5
+-----------------------------
+- Copied Anims4. Changed the free arm in Hold only. The upper arm angles
+  slightly farther back and the forearm hangs forward. The right-hand grip,
+  other idle motion, and remaining clips kept their tracks.
+
+11/21/2026 — ThrowObjectAnims6
+-----------------------------
+- Copied Anims5. Matched the free shoulder, elbow and wrist at the start of
+  Throw to the Hold pose. Eased them into the existing wind-up over frames
+  0–6. Kept the frame-15 release and the other clips.
+
+11/21/2026 — ThrowObjectAnims7
+-----------------------------
+- Copied Anims6. Added a planted crouch called Pick Up. The right hand
+  reaches for the prop, attaches it at frame 22 and rises into the exact Hold
+  start pose at frame 45. The viewer automatically enters Hold after the
+  pickup and exposes the grab marker for frame-by-frame inspection.
+
+11/21/2026 — ThrowObjectAnims8
+-----------------------------
+- Copied Anims7. Smoothed the right elbow and wrist through the pickup reach
+  and lift to remove visible vibration. Reworked the free arm during the
+  crouch. Kept the foot placement, grab frame, clip length, final Hold pose,
+  and five other animations.
+
+11/21/2026 — ThrowObjectAnims9
+-----------------------------
+- Copied Anims8. Revised only the Pick Up left upper arm, forearm and wrist.
+  Brought back the natural Anims7 swing with extra clearance around the knee.
+  Checked the preview arm and floor clearance at 181 quarter-frame samples.
+- Froze the six-clip source used by the Skyrim mod. Kept the previous
+  animation projects and their previews as separate versions.
+
+11/21/2026 — v0.0.1
+------------------
+- Retargeted the six Anims9 actions against the supplied vanilla skeleton
+  and standing idle. Exported x64 HKX using PyNifly, checked packfile
+  readback and the 99-bone binding, and packaged the original clips while
+  keeping the Bethesda input files private.
+- Built the native SKSE64 DLL with CommonLibSSE-NG and Address Library and
+  staged the mod for MO2. Added the light ThrowObject.esm, an Open Animation
+  Replacer carry condition, and Animation Injector one-shots for Pick Up
+  and Throw. Used the six clips without replacing base game animation files.
+- Implemented world-object pickup with G, drop with E while carrying, and
+  throw with left mouse. The held model is attached visually and the original
+  reference is released into Havok. Preserved ownership, stack and reference
+  data, and invoked Skyrim's theft alarm for owned items.
+- Added item weight, size and type to drag tuning. Added configurable
+  force, offsets, keybindings, impact damage, near-miss reactions, and
+  assault bounty through the SKSE Menu Framework and INI. Added recovery
+  for a save made while an item is parked. The initial runtime report
+  identified failed gameplay input, a blank log, and interference with
+  third-person vanilla E handling.
+
+11/22/2026 — v0.0.2
+------------------
+- Replaced numeric scan-code fields with named bindings and interactive
+  capture for keyboard and mouse. Added Rebind, Cancel, Clear, Reset to
+  Defaults, duplicate detection, immediate application and persistence.
+- Added flushed startup and input diagnostics and revised SKSE input
+  dispatch. Scoped hold and movement replacement to the active player
+  carry state at the maximum signed OAR priority. Used dedicated animation
+  events for the pickup and throw one-shots.
+- Isolated normal activation from Throw Object's drop binding and stopped
+  custom flight handling when Skyrim grabs that reference. The reported
+  Dwemer Plate crash occurred after the pickup animation started.
+
+11/22/2026 — v0.0.3
+------------------
+- Matched the crash addresses to the released DLL and PDB. The pickup
+  called NiObject::CreateDeepCopy on live world 3D. DeepCopyStream and
+  NiMemStream entered serialization of the plate's Havok convex shape
+  before a write to a null destination crashed Skyrim.
+- Replaced that copy path with detached render-only static geometry. Kept
+  the original collision tree with the world reference. Added diagnostics
+  around mesh preparation and cancellation and packaged matching symbols.
+  Player testing still found that G never started pickup in this build.
+
+11/22/2026 — v0.0.4
+------------------
+- Used the player's log to trace G to Skyrim's input worker. Queued gameplay
+  requests for the player update so crosshair checks, animations, and
+  object changes occur there. Kept vanilla hold-E separate in both views.
+- Logged button receipt, execution, native grab, animation events, and
+  attachment. Player testing confirmed recognizable Anims9 motion and
+  identified distorted Skyrim poses despite the correct clips playing.
+
+11/22/2026 — v0.0.5
+------------------
+- Compared decoded HKX poses and Anims9 at matching frames. Re-exported all
+  six clips with model-space anatomical alignment and Skyrim parent-local
+  transforms. Verified timing and the Pick Up to Hold and Hold to Throw
+  handoffs in the export checks.
+- Moved the held prop above the palm using rotated bounds and available
+  finger landmarks. Release follows the same hover point. Added clearance
+  against immediate self-intersection and a swept-flight NPC impact check.
+
+11/22/2026 — v0.0.6
+------------------
+- Preserved neutral Skyrim shoulder sockets across all six clips to remove
+  the shoulder-widening deformation. Applied the intended clavicle motion
+  around those sockets. Checked the decoded shoulder span against vanilla.
+- Lowered the hover toward the palm and moved it forward and outward
+  enough to keep bulky objects away from the head and shoulder.
+
+11/22/2026 — v0.0.7
+------------------
+- Nudged the hover outward by one game unit to better line up with the
+  opening of the fist, including on Salmon Meat and Dwemer Plate.
+- Doubled modeled horizontal range for eligible items. Kept item-specific
+  drag and the existing eligibility exclusions for weapons and armor.
+
+11/22/2026 — v0.0.8
+------------------
+- Kept the carry active across adjacent exterior cells in the same
+  worldspace. Retained the item through temporary visual interruptions
+  and a missed pickup-end event after attachment. Loading into a different
+  interior or worldspace still restores the parked item.
+- Centered the hover using the thumb, index and middle fingers with limited
+  clearance for big items. Increased launch tuning by 25% and reduced
+  custom drag by 40% for a flatter and quicker throw.
+- Improved flight sampling, hit-speed fallback, and NPC health diagnostics.
+  Retained the original pickup theft behavior. Verified compatible master
+  and SKSE save data when upgrading from v0.0.7.
+
+11/22/2026 — v0.0.9
+------------------
+- Inspected the Golden Frog archive. It uses a weight-1 miscellaneous
+  inventory form and a normal movable convex clutter body. Improved
+  eligibility and collision picking for loose items generally, and
+  separated successive throws of the same reference. The frog's repeat
+  pickup still failed in the live game and was traced in the next build.
+- Added first-person release clearance in front of the player. Switched
+  NPC hits to the engine's native actor damage with player attribution
+  and a combat request. Added visible near-miss flinches and optional
+  dialogue without damage or bounty. The player confirmed NPC damage and
+  combat, with health loss also recorded in the runtime log.
+- Added intentional return hits to the player after the object clears the
+  release area. A fast enough return can knock down the player with metal
+  items of weight 4 or more or any item of weight 8 or more.
+
+11/22/2026 — v0.0.10
+-------------------
+- The runtime log showed that G selected the same Golden Frog after the
+  first throw and then rejected it as out of pickup range. Changed the
+  keypress and grab-marker checks to use the loaded Havok body's current
+  position. Logs now show the live and stored distances when useful for
+  diagnosis. The range limit still applies to all eligible objects.
+- Verified the unchanged master and save record and added a regression
+  test for a stale reference position. The player accepted v0.0.10 as the
+  stable baseline.
+
+11/23/2026 — v0.0.11
+-------------------
+- First-person throws release on the view ray through the center of the
+  screen at frame 15. Aim uses the active world camera's projection when
+  available. Clearance stays on that line, and a blocked path keeps the
+  object held.
+- The initial direction tracks the cursor on a clear shot. Reachable
+  crosshair targets can use a low ballistic arc. Third-person releases and
+  the existing carry, drop, item tuning, and NPC impact behavior carry
+  forward.
+- Built from a separate copy of v0.0.10. Kept the same master, form IDs,
+  settings, animation files and SKSE recovery record so existing saves
+  can be loaded with the matching SKSE co-save. The compiled DLL and
+  portable tests were checked in the cloud. The new first-person release
+  still needs a live Skyrim check.
+
+11/23/2026 — v0.0.12
+-------------------
+- Fixed the v0.0.11 path that could refuse first-person throws when the
+  centered release had no safe candidate. Try the crosshair line first,
+  then check the established forward and hand release positions. An
+  offset release still aims at the crosshair.
+- Identify the player's collision capsule explicitly during first-person
+  aim and clearance checks. Check scenery and other bodies before
+  releasing. Placement uses the checked world transform directly, so
+  first-person hand-node offsets cannot move the release point.
+- Built from a separate copy of v0.0.11 with the same master, form IDs,
+  animation files, settings and SKSE recovery record. Cloud tests cover a
+  clear centered release, an obstructed center with a usable fallback,
+  and a fully obstructed release. Live Skyrim confirmation is pending.
+
+11/24/2026 — v0.0.13
+-------------------
+- Nearby non-hostile actors now have a daily tolerance for confirmed
+  throws. Adults, children, followers and friendly animals use the same
+  per-actor counter. A glancing miss scores no hit. One throw can add at
+  most one hit to the same actor.
+- Each actor rolls between 3 and 7 by default. The 6 AM game-day boundary
+  clears the count and rolls lazily on the next qualifying hit or look
+  with the optional meter enabled. Same-day counts and thresholds survive
+  travel and loading a matching SKSE co-save. No new script, NPC scan or
+  daily timer runs.
+- Earlier hits can deal nonlethal, unattributed damage. On reaching the
+  threshold, the existing combat, assault bounty and guard handling apply
+  according to Skyrim's rules and Throw Object settings. Previously
+  hostile actors use the v0.0.12 impact behavior.
+- Added Minimum daily tolerance from 1 to 10 and Maximum daily tolerance
+  up to 20 in the SKSE Menu Framework. Changed bounds affect future
+  rolls. The defaults are 3 and 7, and a 1–20 range is supported.
+- Added an optional tolerance meter, off by default. It shows the name
+  and confirmed hits over the threshold for the friendly actor at the
+  crosshair, such as Nazeem TM: 0/7 or Lydia TM: 3/4. The meter can sit in
+  any of the four screen corners. Looking at an actor never adds a hit.
+- Copied v0.0.12 and preserved its master, forms, animations and settings
+  behavior. Added a separate SKSE co-save record for tolerance. The
+  existing held-item record stays compatible.
+
+11/24/2026 — v0.0.14
+-------------------
+- Fixed the tolerance meter display path. The toggle and corner change
+  apply and save directly from the menu. The text draws as a
+  non-interactive HUD overlay with a readable backdrop in all four
+  corners.
+- Use Skyrim's selected actor first, then the crosshair actor handle
+  and a short camera collision query when the handles lack a target.
+  The overlay can display with a replaced vanilla HUD. Added logs to
+  confirm the setting, HUD callback registration and first drawn target.
+- Preserved the v0.0.13 master, form IDs, animations, settings keys and
+  both SKSE co-save records. The upgrade carries forward the existing
+  tolerance rolls and hit counts. Cloud checks cover the DLL and corner
+  placement. Live visibility still needs confirmation in Skyrim.
+
+11/24/2026 — v0.0.15
+-------------------
+- Fixed a pickup lockout caused by a saved held-item reference that was
+  missing, deleted or had a different base object. Once the game is
+  playable, that stale recovery entry is logged and cleared. Valid held
+  items can still be restored from the matching SKSE co-save.
+- Kept the v0.0.14 master, form IDs, animations, settings and SKSE co-save
+  formats. The fix is limited to held-item recovery.
+- Consolidated installation, compatibility, known issues and safe
+  uninstall instructions into README.txt. The MO2 ZIP includes
+  README.txt, CHANGELOG.txt and the required license notices.

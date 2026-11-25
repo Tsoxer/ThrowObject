@@ -1,0 +1,2012 @@
+{
+  "Hold": {
+    "samples_checked": 241,
+    "max_planted_ankle_error_m": 3.3119485930938825e-07,
+    "max_knee_heading_error_deg": 0.00028097891637968327,
+    "max_knee_hinge_error_deg": 0.000319156436256131,
+    "max_world_rotation_degrees_per_frame": {
+      "UpperArm.R": 0.048,
+      "Forearm.R": 0.088,
+      "ForearmRoll.R": 0.084,
+      "Hand.R": 0.044
+    },
+    "max_socket_offset_from_first_frame_m": 0.014075743305616365,
+    "frames": [
+      {
+        "frame": 0,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.177,
+        "elbow_flexion_deg": 46.546,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.372,
+        "wrist_flexion_deg": 11.493,
+        "wrist_deviation_deg": -11.836,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2314822,
+          0.359163,
+          0.9999195
+        ],
+        "pelvis_position_m": [
+          0.017,
+          -0.002,
+          0.884
+        ]
+      },
+      {
+        "frame": 1,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.178,
+        "elbow_flexion_deg": 46.549,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.373,
+        "wrist_flexion_deg": 11.49,
+        "wrist_deviation_deg": -11.834,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2323686,
+          0.3592608,
+          0.9998097
+        ],
+        "pelvis_position_m": [
+          0.0179395,
+          -0.001989,
+          0.8840096
+        ]
+      },
+      {
+        "frame": 2,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.183,
+        "elbow_flexion_deg": 46.557,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.377,
+        "wrist_flexion_deg": 11.483,
+        "wrist_deviation_deg": -11.828,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2332365,
+          0.3594001,
+          0.9997652
+        ],
+        "pelvis_position_m": [
+          0.018861,
+          -0.0019563,
+          0.8840383
+        ]
+      },
+      {
+        "frame": 3,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.191,
+        "elbow_flexion_deg": 46.571,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.382,
+        "wrist_flexion_deg": 11.471,
+        "wrist_deviation_deg": -11.819,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.059,
+        "socket_position_m": [
+          0.2340693,
+          0.3595784,
+          0.999788
+        ],
+        "pelvis_position_m": [
+          0.0197471,
+          -0.0019021,
+          0.8840857
+        ]
+      },
+      {
+        "frame": 4,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.201,
+        "elbow_flexion_deg": 46.59,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.39,
+        "wrist_flexion_deg": 11.455,
+        "wrist_deviation_deg": -11.806,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.059,
+        "socket_position_m": [
+          0.2348518,
+          0.3597934,
+          0.9998786
+        ],
+        "pelvis_position_m": [
+          0.0205815,
+          -0.0018271,
+          0.8841513
+        ]
+      },
+      {
+        "frame": 5,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.215,
+        "elbow_flexion_deg": 46.615,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.4,
+        "wrist_flexion_deg": 11.434,
+        "wrist_deviation_deg": -11.789,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.06,
+        "socket_position_m": [
+          0.23557,
+          0.3600424,
+          1.0000379
+        ],
+        "pelvis_position_m": [
+          0.0213493,
+          -0.0017321,
+          0.8842345
+        ]
+      },
+      {
+        "frame": 6,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.231,
+        "elbow_flexion_deg": 46.644,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.412,
+        "wrist_flexion_deg": 11.409,
+        "wrist_deviation_deg": -11.77,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.061,
+        "socket_position_m": [
+          0.2362118,
+          0.3603216,
+          1.0002636
+        ],
+        "pelvis_position_m": [
+          0.0220375,
+          -0.001618,
+          0.8843343
+        ]
+      },
+      {
+        "frame": 7,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.25,
+        "elbow_flexion_deg": 46.678,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.425,
+        "wrist_flexion_deg": 11.38,
+        "wrist_deviation_deg": -11.747,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.061,
+        "socket_position_m": [
+          0.2367673,
+          0.3606283,
+          1.0005549
+        ],
+        "pelvis_position_m": [
+          0.0226355,
+          -0.0014863,
+          0.8844495
+        ]
+      },
+      {
+        "frame": 8,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.271,
+        "elbow_flexion_deg": 46.717,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.441,
+        "wrist_flexion_deg": 11.348,
+        "wrist_deviation_deg": -11.722,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.062,
+        "socket_position_m": [
+          0.2372288,
+          0.3609587,
+          1.0009086
+        ],
+        "pelvis_position_m": [
+          0.0231351,
+          -0.0013383,
+          0.8845791
+        ]
+      },
+      {
+        "frame": 9,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.294,
+        "elbow_flexion_deg": 46.759,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.457,
+        "wrist_flexion_deg": 11.312,
+        "wrist_deviation_deg": -11.693,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.063,
+        "socket_position_m": [
+          0.2375917,
+          0.361309,
+          1.0013212
+        ],
+        "pelvis_position_m": [
+          0.0235308,
+          -0.0011756,
+          0.8847214
+        ]
+      },
+      {
+        "frame": 10,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.32,
+        "elbow_flexion_deg": 46.804,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.475,
+        "wrist_flexion_deg": 11.274,
+        "wrist_deviation_deg": -11.663,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.064,
+        "socket_position_m": [
+          0.2378527,
+          0.3616756,
+          1.0017878
+        ],
+        "pelvis_position_m": [
+          0.02382,
+          -0.001,
+          0.884875
+        ]
+      },
+      {
+        "frame": 11,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.346,
+        "elbow_flexion_deg": 46.853,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.495,
+        "wrist_flexion_deg": 11.233,
+        "wrist_deviation_deg": -11.631,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.066,
+        "socket_position_m": [
+          0.2380124,
+          0.3620543,
+          1.0023034
+        ],
+        "pelvis_position_m": [
+          0.0240025,
+          -0.0008135,
+          0.8850383
+        ]
+      },
+      {
+        "frame": 12,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.374,
+        "elbow_flexion_deg": 46.904,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.515,
+        "wrist_flexion_deg": 11.19,
+        "wrist_deviation_deg": -11.597,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.067,
+        "socket_position_m": [
+          0.2380735,
+          0.362442,
+          1.002861
+        ],
+        "pelvis_position_m": [
+          0.0240809,
+          -0.000618,
+          0.8852093
+        ]
+      },
+      {
+        "frame": 13,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.403,
+        "elbow_flexion_deg": 46.956,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.536,
+        "wrist_flexion_deg": 11.145,
+        "wrist_deviation_deg": -11.562,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.068,
+        "socket_position_m": [
+          0.2380399,
+          0.3628345,
+          1.0034546
+        ],
+        "pelvis_position_m": [
+          0.0240601,
+          -0.0004158,
+          0.8853862
+        ]
+      },
+      {
+        "frame": 14,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.432,
+        "elbow_flexion_deg": 47.01,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.557,
+        "wrist_flexion_deg": 11.099,
+        "wrist_deviation_deg": -11.526,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.07,
+        "socket_position_m": [
+          0.237919,
+          0.3632278,
+          1.004076
+        ],
+        "pelvis_position_m": [
+          0.0239469,
+          -0.0002091,
+          0.8855671
+        ]
+      },
+      {
+        "frame": 15,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.462,
+        "elbow_flexion_deg": 47.065,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.578,
+        "wrist_flexion_deg": 11.053,
+        "wrist_deviation_deg": -11.489,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.071,
+        "socket_position_m": [
+          0.2377186,
+          0.3636186,
+          1.0047177
+        ],
+        "pelvis_position_m": [
+          0.02375,
+          0.0,
+          0.88575
+        ]
+      },
+      {
+        "frame": 16,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.492,
+        "elbow_flexion_deg": 47.12,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.6,
+        "wrist_flexion_deg": 11.007,
+        "wrist_deviation_deg": -11.453,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.072,
+        "socket_position_m": [
+          0.2374481,
+          0.364003,
+          1.0053713
+        ],
+        "pelvis_position_m": [
+          0.0234791,
+          0.0002091,
+          0.8859329
+        ]
+      },
+      {
+        "frame": 17,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.522,
+        "elbow_flexion_deg": 47.174,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.621,
+        "wrist_flexion_deg": 10.961,
+        "wrist_deviation_deg": -11.417,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.073,
+        "socket_position_m": [
+          0.2371178,
+          0.3643772,
+          1.0060284
+        ],
+        "pelvis_position_m": [
+          0.0231449,
+          0.0004158,
+          0.8861139
+        ]
+      },
+      {
+        "frame": 18,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.55,
+        "elbow_flexion_deg": 47.227,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.642,
+        "wrist_flexion_deg": 10.916,
+        "wrist_deviation_deg": -11.381,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.075,
+        "socket_position_m": [
+          0.2367377,
+          0.3647383,
+          1.0066808
+        ],
+        "pelvis_position_m": [
+          0.0227584,
+          0.000618,
+          0.8862908
+        ]
+      },
+      {
+        "frame": 19,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.578,
+        "elbow_flexion_deg": 47.278,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.661,
+        "wrist_flexion_deg": 10.873,
+        "wrist_deviation_deg": -11.347,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.076,
+        "socket_position_m": [
+          0.2363189,
+          0.3650828,
+          1.00732
+        ],
+        "pelvis_position_m": [
+          0.0223304,
+          0.0008135,
+          0.8864618
+        ]
+      },
+      {
+        "frame": 20,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.605,
+        "elbow_flexion_deg": 47.327,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.68,
+        "wrist_flexion_deg": 10.831,
+        "wrist_deviation_deg": -11.314,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.077,
+        "socket_position_m": [
+          0.235871,
+          0.3654069,
+          1.0079385
+        ],
+        "pelvis_position_m": [
+          0.0218714,
+          0.001,
+          0.8866251
+        ]
+      },
+      {
+        "frame": 21,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.63,
+        "elbow_flexion_deg": 47.374,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.698,
+        "wrist_flexion_deg": 10.792,
+        "wrist_deviation_deg": -11.283,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.078,
+        "socket_position_m": [
+          0.2354037,
+          0.3657078,
+          1.0085281
+        ],
+        "pelvis_position_m": [
+          0.0213909,
+          0.0011756,
+          0.8867787
+        ]
+      },
+      {
+        "frame": 22,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.653,
+        "elbow_flexion_deg": 47.417,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.715,
+        "wrist_flexion_deg": 10.756,
+        "wrist_deviation_deg": -11.255,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.079,
+        "socket_position_m": [
+          0.2349244,
+          0.3659827,
+          1.0090822
+        ],
+        "pelvis_position_m": [
+          0.0208974,
+          0.0013383,
+          0.886921
+        ]
+      },
+      {
+        "frame": 23,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.674,
+        "elbow_flexion_deg": 47.456,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.73,
+        "wrist_flexion_deg": 10.723,
+        "wrist_deviation_deg": -11.229,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.08,
+        "socket_position_m": [
+          0.23444,
+          0.3662286,
+          1.0095943
+        ],
+        "pelvis_position_m": [
+          0.0203978,
+          0.0014863,
+          0.8870505
+        ]
+      },
+      {
+        "frame": 24,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.693,
+        "elbow_flexion_deg": 47.491,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.743,
+        "wrist_flexion_deg": 10.693,
+        "wrist_deviation_deg": -11.206,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.081,
+        "socket_position_m": [
+          0.2339562,
+          0.3664427,
+          1.010059
+        ],
+        "pelvis_position_m": [
+          0.0198976,
+          0.001618,
+          0.8871658
+        ]
+      },
+      {
+        "frame": 25,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.709,
+        "elbow_flexion_deg": 47.521,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.755,
+        "wrist_flexion_deg": 10.668,
+        "wrist_deviation_deg": -11.185,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.082,
+        "socket_position_m": [
+          0.2334767,
+          0.3666229,
+          1.0104706
+        ],
+        "pelvis_position_m": [
+          0.0194007,
+          0.0017321,
+          0.8872656
+        ]
+      },
+      {
+        "frame": 26,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.723,
+        "elbow_flexion_deg": 47.546,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.765,
+        "wrist_flexion_deg": 10.646,
+        "wrist_deviation_deg": -11.169,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.2330038,
+          0.3667666,
+          1.0108258
+        ],
+        "pelvis_position_m": [
+          0.0189094,
+          0.0018271,
+          0.8873487
+        ]
+      },
+      {
+        "frame": 27,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.733,
+        "elbow_flexion_deg": 47.566,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.772,
+        "wrist_flexion_deg": 10.63,
+        "wrist_deviation_deg": -11.155,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.2325383,
+          0.3668723,
+          1.0111206
+        ],
+        "pelvis_position_m": [
+          0.0184246,
+          0.0019021,
+          0.8874144
+        ]
+      },
+      {
+        "frame": 28,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.741,
+        "elbow_flexion_deg": 47.58,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.778,
+        "wrist_flexion_deg": 10.617,
+        "wrist_deviation_deg": -11.146,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.23208,
+          0.3669381,
+          1.011353
+        ],
+        "pelvis_position_m": [
+          0.0179458,
+          0.0019563,
+          0.8874618
+        ]
+      },
+      {
+        "frame": 29,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.746,
+        "elbow_flexion_deg": 47.589,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.781,
+        "wrist_flexion_deg": 10.61,
+        "wrist_deviation_deg": -11.14,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.084,
+        "socket_position_m": [
+          0.2316276,
+          0.3669629,
+          1.0115215
+        ],
+        "pelvis_position_m": [
+          0.0174717,
+          0.001989,
+          0.8874905
+        ]
+      },
+      {
+        "frame": 30,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.747,
+        "elbow_flexion_deg": 47.592,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.782,
+        "wrist_flexion_deg": 10.608,
+        "wrist_deviation_deg": -11.138,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.084,
+        "socket_position_m": [
+          0.2311792,
+          0.3669456,
+          1.0116246
+        ],
+        "pelvis_position_m": [
+          0.017,
+          0.002,
+          0.8875
+        ]
+      },
+      {
+        "frame": 31,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.746,
+        "elbow_flexion_deg": 47.589,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.781,
+        "wrist_flexion_deg": 10.61,
+        "wrist_deviation_deg": -11.14,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.084,
+        "socket_position_m": [
+          0.2307325,
+          0.3668862,
+          1.0116633
+        ],
+        "pelvis_position_m": [
+          0.0165283,
+          0.001989,
+          0.8874905
+        ]
+      },
+      {
+        "frame": 32,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.741,
+        "elbow_flexion_deg": 47.58,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.778,
+        "wrist_flexion_deg": 10.617,
+        "wrist_deviation_deg": -11.146,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.230285,
+          0.3667847,
+          1.011638
+        ],
+        "pelvis_position_m": [
+          0.0160542,
+          0.0019563,
+          0.8874618
+        ]
+      },
+      {
+        "frame": 33,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.733,
+        "elbow_flexion_deg": 47.566,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.772,
+        "wrist_flexion_deg": 10.63,
+        "wrist_deviation_deg": -11.155,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.2298348,
+          0.3666412,
+          1.0115496
+        ],
+        "pelvis_position_m": [
+          0.0155754,
+          0.0019021,
+          0.8874144
+        ]
+      },
+      {
+        "frame": 34,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.723,
+        "elbow_flexion_deg": 47.546,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.765,
+        "wrist_flexion_deg": 10.646,
+        "wrist_deviation_deg": -11.169,
+        "wrist_axial_error_deg": -1e-05,
+        "min_head_or_torso_clearance": 3.083,
+        "socket_position_m": [
+          0.2293806,
+          0.3664567,
+          1.0114007
+        ],
+        "pelvis_position_m": [
+          0.0150906,
+          0.0018271,
+          0.8873487
+        ]
+      },
+      {
+        "frame": 35,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.709,
+        "elbow_flexion_deg": 47.521,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.755,
+        "wrist_flexion_deg": 10.668,
+        "wrist_deviation_deg": -11.185,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.082,
+        "socket_position_m": [
+          0.2289219,
+          0.3662334,
+          1.0111938
+        ],
+        "pelvis_position_m": [
+          0.0145993,
+          0.0017321,
+          0.8872656
+        ]
+      },
+      {
+        "frame": 36,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.693,
+        "elbow_flexion_deg": 47.491,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.743,
+        "wrist_flexion_deg": 10.693,
+        "wrist_deviation_deg": -11.206,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.081,
+        "socket_position_m": [
+          0.2284595,
+          0.3659725,
+          1.0109317
+        ],
+        "pelvis_position_m": [
+          0.0141024,
+          0.001618,
+          0.8871658
+        ]
+      },
+      {
+        "frame": 37,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.674,
+        "elbow_flexion_deg": 47.456,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.73,
+        "wrist_flexion_deg": 10.723,
+        "wrist_deviation_deg": -11.229,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.08,
+        "socket_position_m": [
+          0.2279955,
+          0.3656771,
+          1.0106176
+        ],
+        "pelvis_position_m": [
+          0.0136022,
+          0.0014863,
+          0.8870505
+        ]
+      },
+      {
+        "frame": 38,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.653,
+        "elbow_flexion_deg": 47.417,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.715,
+        "wrist_flexion_deg": 10.756,
+        "wrist_deviation_deg": -11.255,
+        "wrist_axial_error_deg": 2e-05,
+        "min_head_or_torso_clearance": 3.079,
+        "socket_position_m": [
+          0.2275335,
+          0.3653501,
+          1.0102561
+        ],
+        "pelvis_position_m": [
+          0.0131026,
+          0.0013383,
+          0.886921
+        ]
+      },
+      {
+        "frame": 39,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.63,
+        "elbow_flexion_deg": 47.374,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.698,
+        "wrist_flexion_deg": 10.792,
+        "wrist_deviation_deg": -11.283,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.078,
+        "socket_position_m": [
+          0.2270784,
+          0.3649953,
+          1.0098507
+        ],
+        "pelvis_position_m": [
+          0.0126091,
+          0.0011756,
+          0.8867787
+        ]
+      },
+      {
+        "frame": 40,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.605,
+        "elbow_flexion_deg": 47.327,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.68,
+        "wrist_flexion_deg": 10.831,
+        "wrist_deviation_deg": -11.314,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.077,
+        "socket_position_m": [
+          0.226637,
+          0.3646162,
+          1.0094056
+        ],
+        "pelvis_position_m": [
+          0.0121286,
+          0.001,
+          0.8866251
+        ]
+      },
+      {
+        "frame": 41,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.578,
+        "elbow_flexion_deg": 47.278,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.661,
+        "wrist_flexion_deg": 10.873,
+        "wrist_deviation_deg": -11.347,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.076,
+        "socket_position_m": [
+          0.2262169,
+          0.3642173,
+          1.0089253
+        ],
+        "pelvis_position_m": [
+          0.0116696,
+          0.0008135,
+          0.8864618
+        ]
+      },
+      {
+        "frame": 42,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.55,
+        "elbow_flexion_deg": 47.227,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.641,
+        "wrist_flexion_deg": 10.916,
+        "wrist_deviation_deg": -11.381,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.075,
+        "socket_position_m": [
+          0.2258272,
+          0.3638035,
+          1.0084151
+        ],
+        "pelvis_position_m": [
+          0.0112416,
+          0.000618,
+          0.8862908
+        ]
+      },
+      {
+        "frame": 43,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.522,
+        "elbow_flexion_deg": 47.174,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.621,
+        "wrist_flexion_deg": 10.961,
+        "wrist_deviation_deg": -11.417,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.073,
+        "socket_position_m": [
+          0.2254774,
+          0.3633796,
+          1.0078788
+        ],
+        "pelvis_position_m": [
+          0.0108551,
+          0.0004158,
+          0.8861139
+        ]
+      },
+      {
+        "frame": 44,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.492,
+        "elbow_flexion_deg": 47.12,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.6,
+        "wrist_flexion_deg": 11.007,
+        "wrist_deviation_deg": -11.453,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.072,
+        "socket_position_m": [
+          0.2251779,
+          0.3629508,
+          1.0073227
+        ],
+        "pelvis_position_m": [
+          0.0105209,
+          0.0002091,
+          0.8859329
+        ]
+      },
+      {
+        "frame": 45,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.462,
+        "elbow_flexion_deg": 47.065,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.578,
+        "wrist_flexion_deg": 11.053,
+        "wrist_deviation_deg": -11.489,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.071,
+        "socket_position_m": [
+          0.2249386,
+          0.3625223,
+          1.0067506
+        ],
+        "pelvis_position_m": [
+          0.01025,
+          0.0,
+          0.88575
+        ]
+      },
+      {
+        "frame": 46,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.432,
+        "elbow_flexion_deg": 47.01,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.557,
+        "wrist_flexion_deg": 11.099,
+        "wrist_deviation_deg": -11.526,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.07,
+        "socket_position_m": [
+          0.2247694,
+          0.3620994,
+          1.0061681
+        ],
+        "pelvis_position_m": [
+          0.0100531,
+          -0.0002091,
+          0.8855671
+        ]
+      },
+      {
+        "frame": 47,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.403,
+        "elbow_flexion_deg": 46.956,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.536,
+        "wrist_flexion_deg": 11.145,
+        "wrist_deviation_deg": -11.562,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.068,
+        "socket_position_m": [
+          0.2246794,
+          0.3616876,
+          1.0055807
+        ],
+        "pelvis_position_m": [
+          0.0099399,
+          -0.0004158,
+          0.8853862
+        ]
+      },
+      {
+        "frame": 48,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.374,
+        "elbow_flexion_deg": 46.904,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.515,
+        "wrist_flexion_deg": 11.19,
+        "wrist_deviation_deg": -11.597,
+        "wrist_axial_error_deg": -1e-05,
+        "min_head_or_torso_clearance": 3.067,
+        "socket_position_m": [
+          0.2246765,
+          0.3612916,
+          1.0049934
+        ],
+        "pelvis_position_m": [
+          0.0099191,
+          -0.000618,
+          0.8852093
+        ]
+      },
+      {
+        "frame": 49,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.346,
+        "elbow_flexion_deg": 46.853,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.495,
+        "wrist_flexion_deg": 11.233,
+        "wrist_deviation_deg": -11.631,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.066,
+        "socket_position_m": [
+          0.2247671,
+          0.3609166,
+          1.0044121
+        ],
+        "pelvis_position_m": [
+          0.0099975,
+          -0.0008135,
+          0.8850383
+        ]
+      },
+      {
+        "frame": 50,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.32,
+        "elbow_flexion_deg": 46.804,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.475,
+        "wrist_flexion_deg": 11.274,
+        "wrist_deviation_deg": -11.663,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.064,
+        "socket_position_m": [
+          0.2249553,
+          0.3605672,
+          1.0038419
+        ],
+        "pelvis_position_m": [
+          0.0101801,
+          -0.001,
+          0.884875
+        ]
+      },
+      {
+        "frame": 51,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.294,
+        "elbow_flexion_deg": 46.759,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.457,
+        "wrist_flexion_deg": 11.312,
+        "wrist_deviation_deg": -11.693,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.063,
+        "socket_position_m": [
+          0.2252434,
+          0.3602476,
+          1.0032879
+        ],
+        "pelvis_position_m": [
+          0.0104692,
+          -0.0011756,
+          0.8847214
+        ]
+      },
+      {
+        "frame": 52,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.271,
+        "elbow_flexion_deg": 46.717,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.441,
+        "wrist_flexion_deg": 11.348,
+        "wrist_deviation_deg": -11.722,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.062,
+        "socket_position_m": [
+          0.2256312,
+          0.3599614,
+          1.0027559
+        ],
+        "pelvis_position_m": [
+          0.0108649,
+          -0.0013383,
+          0.8845791
+        ]
+      },
+      {
+        "frame": 53,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.25,
+        "elbow_flexion_deg": 46.678,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.425,
+        "wrist_flexion_deg": 11.38,
+        "wrist_deviation_deg": -11.747,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.061,
+        "socket_position_m": [
+          0.2261159,
+          0.3597123,
+          1.002252
+        ],
+        "pelvis_position_m": [
+          0.0113645,
+          -0.0014863,
+          0.8844495
+        ]
+      },
+      {
+        "frame": 54,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.231,
+        "elbow_flexion_deg": 46.644,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.412,
+        "wrist_flexion_deg": 11.409,
+        "wrist_deviation_deg": -11.77,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.061,
+        "socket_position_m": [
+          0.226692,
+          0.3595028,
+          1.0017807
+        ],
+        "pelvis_position_m": [
+          0.0119625,
+          -0.001618,
+          0.8843343
+        ]
+      },
+      {
+        "frame": 55,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.215,
+        "elbow_flexion_deg": 46.615,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.4,
+        "wrist_flexion_deg": 11.434,
+        "wrist_deviation_deg": -11.789,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 3.06,
+        "socket_position_m": [
+          0.2273519,
+          0.3593353,
+          1.0013477
+        ],
+        "pelvis_position_m": [
+          0.0126507,
+          -0.0017321,
+          0.8842345
+        ]
+      },
+      {
+        "frame": 56,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.201,
+        "elbow_flexion_deg": 46.59,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.39,
+        "wrist_flexion_deg": 11.455,
+        "wrist_deviation_deg": -11.806,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 3.059,
+        "socket_position_m": [
+          0.2280849,
+          0.3592112,
+          1.0009575
+        ],
+        "pelvis_position_m": [
+          0.0134185,
+          -0.0018271,
+          0.8841513
+        ]
+      },
+      {
+        "frame": 57,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.191,
+        "elbow_flexion_deg": 46.571,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.382,
+        "wrist_flexion_deg": 11.471,
+        "wrist_deviation_deg": -11.819,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.059,
+        "socket_position_m": [
+          0.2288795,
+          0.3591318,
+          1.0006154
+        ],
+        "pelvis_position_m": [
+          0.0142529,
+          -0.0019021,
+          0.8840857
+        ]
+      },
+      {
+        "frame": 58,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.183,
+        "elbow_flexion_deg": 46.557,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.377,
+        "wrist_flexion_deg": 11.483,
+        "wrist_deviation_deg": -11.828,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2297209,
+          0.3590975,
+          1.0003257
+        ],
+        "pelvis_position_m": [
+          0.015139,
+          -0.0019563,
+          0.8840383
+        ]
+      },
+      {
+        "frame": 59,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.178,
+        "elbow_flexion_deg": 46.549,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.373,
+        "wrist_flexion_deg": 11.49,
+        "wrist_deviation_deg": -11.834,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.230594,
+          0.3591081,
+          1.0000925
+        ],
+        "pelvis_position_m": [
+          0.0160605,
+          -0.001989,
+          0.8840096
+        ]
+      },
+      {
+        "frame": 60,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.177,
+        "elbow_flexion_deg": 46.546,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.372,
+        "wrist_flexion_deg": 11.493,
+        "wrist_deviation_deg": -11.836,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2314822,
+          0.359163,
+          0.9999195
+        ],
+        "pelvis_position_m": [
+          0.017,
+          -0.002,
+          0.884
+        ]
+      }
+    ]
+  },
+  "Throw": {
+    "samples_checked": 113,
+    "max_planted_ankle_error_m": 0.0006998882964002836,
+    "max_knee_heading_error_deg": 0.005378511794297465,
+    "max_knee_hinge_error_deg": 0.0005301827454853102,
+    "max_world_rotation_degrees_per_frame": {
+      "UpperArm.R": 37.817,
+      "Forearm.R": 34.48,
+      "ForearmRoll.R": 47.186,
+      "Hand.R": 48.324
+    },
+    "max_socket_offset_from_first_frame_m": 1.0081655674899912,
+    "frames": [
+      {
+        "frame": 0,
+        "shoulder_elevation_deg": 18.29,
+        "shoulder_axial_deg": 34.177,
+        "elbow_flexion_deg": 46.546,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -16.372,
+        "wrist_flexion_deg": 11.493,
+        "wrist_deviation_deg": -11.836,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.058,
+        "socket_position_m": [
+          0.2314822,
+          0.359163,
+          0.9999195
+        ],
+        "pelvis_position_m": [
+          0.017,
+          -0.002,
+          0.884
+        ]
+      },
+      {
+        "frame": 1,
+        "shoulder_elevation_deg": 19.831,
+        "shoulder_axial_deg": 34.063,
+        "elbow_flexion_deg": 47.128,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -16.993,
+        "wrist_flexion_deg": 11.309,
+        "wrist_deviation_deg": -11.094,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 18.892,
+        "socket_position_m": [
+          0.2546806,
+          0.3479573,
+          0.994213
+        ],
+        "pelvis_position_m": [
+          0.0179259,
+          -0.002963,
+          0.8821852
+        ]
+      },
+      {
+        "frame": 2,
+        "shoulder_elevation_deg": 24.509,
+        "shoulder_axial_deg": 35.689,
+        "elbow_flexion_deg": 49.589,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -18.865,
+        "wrist_flexion_deg": 10.349,
+        "wrist_deviation_deg": -9.501,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 19.718,
+        "socket_position_m": [
+          0.3154399,
+          0.3245825,
+          0.9929306
+        ],
+        "pelvis_position_m": [
+          0.0204074,
+          -0.0054815,
+          0.8781482
+        ]
+      },
+      {
+        "frame": 3,
+        "shoulder_elevation_deg": 31.327,
+        "shoulder_axial_deg": 42.0,
+        "elbow_flexion_deg": 55.0,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -22.0,
+        "wrist_flexion_deg": 8.0,
+        "wrist_deviation_deg": -8.0,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 20.627,
+        "socket_position_m": [
+          0.4010398,
+          0.3031517,
+          1.0219477
+        ],
+        "pelvis_position_m": [
+          0.024,
+          -0.009,
+          0.874
+        ]
+      },
+      {
+        "frame": 4,
+        "shoulder_elevation_deg": 40.205,
+        "shoulder_axial_deg": 56.002,
+        "elbow_flexion_deg": 65.871,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -26.972,
+        "wrist_flexion_deg": 3.43,
+        "wrist_deviation_deg": -6.894,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 21.553,
+        "socket_position_m": [
+          0.5111273,
+          0.2779343,
+          1.1170139
+        ],
+        "pelvis_position_m": [
+          0.029037,
+          -0.0137407,
+          0.8701111
+        ]
+      },
+      {
+        "frame": 5,
+        "shoulder_elevation_deg": 51.234,
+        "shoulder_axial_deg": 74.69,
+        "elbow_flexion_deg": 79.691,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -33.208,
+        "wrist_flexion_deg": -2.529,
+        "wrist_deviation_deg": -5.88,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 22.338,
+        "socket_position_m": [
+          0.607007,
+          0.2136745,
+          1.2741156
+        ],
+        "pelvis_position_m": [
+          0.0351852,
+          -0.0194815,
+          0.8661112
+        ]
+      },
+      {
+        "frame": 6,
+        "shoulder_elevation_deg": 63.206,
+        "shoulder_axial_deg": 92.0,
+        "elbow_flexion_deg": 90.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -39.0,
+        "wrist_flexion_deg": -8.0,
+        "wrist_deviation_deg": -5.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 22.69,
+        "socket_position_m": [
+          0.642864,
+          0.1207199,
+          1.4306115
+        ],
+        "pelvis_position_m": [
+          0.041,
+          -0.025,
+          0.863
+        ]
+      },
+      {
+        "frame": 7,
+        "shoulder_elevation_deg": 80.259,
+        "shoulder_axial_deg": 103.65,
+        "elbow_flexion_deg": 89.85,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -43.625,
+        "wrist_flexion_deg": -11.962,
+        "wrist_deviation_deg": -4.363,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 22.24,
+        "socket_position_m": [
+          0.6524146,
+          0.0296648,
+          1.5649959
+        ],
+        "pelvis_position_m": [
+          0.0465704,
+          -0.0310296,
+          0.8614519
+        ]
+      },
+      {
+        "frame": 8,
+        "shoulder_elevation_deg": 95.741,
+        "shoulder_axial_deg": 115.0,
+        "elbow_flexion_deg": 87.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -47.0,
+        "wrist_flexion_deg": -15.0,
+        "wrist_deviation_deg": -4.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 20.505,
+        "socket_position_m": [
+          0.6192444,
+          -0.0516724,
+          1.6865512
+        ],
+        "pelvis_position_m": [
+          0.0518074,
+          -0.036837,
+          0.8607926
+        ]
+      },
+      {
+        "frame": 9,
+        "shoulder_elevation_deg": 99.043,
+        "shoulder_axial_deg": 130.5,
+        "elbow_flexion_deg": 90.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -48.792,
+        "wrist_flexion_deg": -17.437,
+        "wrist_deviation_deg": -3.938,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 18.677,
+        "socket_position_m": [
+          0.5550283,
+          -0.1330609,
+          1.746699
+        ],
+        "pelvis_position_m": [
+          0.055,
+          -0.039,
+          0.86
+        ]
+      },
+      {
+        "frame": 10,
+        "shoulder_elevation_deg": 98.649,
+        "shoulder_axial_deg": 148.0,
+        "elbow_flexion_deg": 94.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -49.0,
+        "wrist_flexion_deg": -19.0,
+        "wrist_deviation_deg": -4.0,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 16.453,
+        "socket_position_m": [
+          0.4742117,
+          -0.2055377,
+          1.7726463
+        ],
+        "pelvis_position_m": [
+          0.0542333,
+          -0.0322167,
+          0.8578667
+        ]
+      },
+      {
+        "frame": 11,
+        "shoulder_elevation_deg": 98.552,
+        "shoulder_axial_deg": 169.0,
+        "elbow_flexion_deg": 96.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -45.0,
+        "wrist_flexion_deg": -18.0,
+        "wrist_deviation_deg": -4.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 14.638,
+        "socket_position_m": [
+          0.3743286,
+          -0.2655874,
+          1.7781738
+        ],
+        "pelvis_position_m": [
+          0.049,
+          -0.021,
+          0.857
+        ]
+      },
+      {
+        "frame": 12,
+        "shoulder_elevation_deg": 103.86,
+        "shoulder_axial_deg": 162.0,
+        "elbow_flexion_deg": 93.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -38.0,
+        "wrist_flexion_deg": -15.0,
+        "wrist_deviation_deg": -3.0,
+        "wrist_axial_error_deg": 2e-05,
+        "min_head_or_torso_clearance": 14.154,
+        "socket_position_m": [
+          0.365916,
+          -0.173819,
+          1.8129253
+        ],
+        "pelvis_position_m": [
+          0.033,
+          -0.01,
+          0.864
+        ]
+      },
+      {
+        "frame": 13,
+        "shoulder_elevation_deg": 118.086,
+        "shoulder_axial_deg": 123.0,
+        "elbow_flexion_deg": 80.0,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -25.0,
+        "wrist_flexion_deg": -11.0,
+        "wrist_deviation_deg": -1.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 12.501,
+        "socket_position_m": [
+          0.3196165,
+          0.082467,
+          1.888873
+        ],
+        "pelvis_position_m": [
+          0.0178125,
+          0.0033542,
+          0.8756042
+        ]
+      },
+      {
+        "frame": 14,
+        "shoulder_elevation_deg": 121.076,
+        "shoulder_axial_deg": 80.0,
+        "elbow_flexion_deg": 60.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -23.0,
+        "wrist_flexion_deg": -6.0,
+        "wrist_deviation_deg": 2.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 14.211,
+        "socket_position_m": [
+          0.2405459,
+          0.3670801,
+          1.8673799
+        ],
+        "pelvis_position_m": [
+          0.001,
+          0.017,
+          0.883
+        ]
+      },
+      {
+        "frame": 15,
+        "shoulder_elevation_deg": 119.299,
+        "shoulder_axial_deg": 38.0,
+        "elbow_flexion_deg": 30.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -35.0,
+        "wrist_flexion_deg": 12.0,
+        "wrist_deviation_deg": 4.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 11.825,
+        "socket_position_m": [
+          0.0632004,
+          0.5849172,
+          1.7434064
+        ],
+        "pelvis_position_m": [
+          -0.0228125,
+          0.0314375,
+          0.8755625
+        ]
+      },
+      {
+        "frame": 16,
+        "shoulder_elevation_deg": 103.914,
+        "shoulder_axial_deg": -3.0,
+        "elbow_flexion_deg": 27.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -48.0,
+        "wrist_flexion_deg": 23.0,
+        "wrist_deviation_deg": 5.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 11.566,
+        "socket_position_m": [
+          -0.1586484,
+          0.6401164,
+          1.458744
+        ],
+        "pelvis_position_m": [
+          -0.044,
+          0.043,
+          0.865
+        ]
+      },
+      {
+        "frame": 17,
+        "shoulder_elevation_deg": 78.009,
+        "shoulder_axial_deg": -22.958,
+        "elbow_flexion_deg": 30.458,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -52.979,
+        "wrist_flexion_deg": 20.583,
+        "wrist_deviation_deg": 5.271,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 6.104,
+        "socket_position_m": [
+          -0.2276827,
+          0.5579301,
+          1.1624025
+        ],
+        "pelvis_position_m": [
+          -0.0534,
+          0.047575,
+          0.8601
+        ]
+      },
+      {
+        "frame": 18,
+        "shoulder_elevation_deg": 54.414,
+        "shoulder_axial_deg": -35.0,
+        "elbow_flexion_deg": 34.0,
+        "elbow_hinge_axis_error_deg": 3e-05,
+        "forearm_roll_deg": -55.0,
+        "wrist_flexion_deg": 16.0,
+        "wrist_deviation_deg": 5.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 4.36,
+        "socket_position_m": [
+          -0.2160155,
+          0.382638,
+          0.9707582
+        ],
+        "pelvis_position_m": [
+          -0.055,
+          0.047,
+          0.859
+        ]
+      },
+      {
+        "frame": 19,
+        "shoulder_elevation_deg": 43.248,
+        "shoulder_axial_deg": -38.438,
+        "elbow_flexion_deg": 34.625,
+        "elbow_hinge_axis_error_deg": 0.0,
+        "forearm_roll_deg": -53.937,
+        "wrist_flexion_deg": 13.312,
+        "wrist_deviation_deg": 3.687,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 3.234,
+        "socket_position_m": [
+          -0.1928411,
+          0.2841382,
+          0.9230629
+        ],
+        "pelvis_position_m": [
+          -0.0509185,
+          0.0424593,
+          0.8621185
+        ]
+      },
+      {
+        "frame": 20,
+        "shoulder_elevation_deg": 35.066,
+        "shoulder_axial_deg": -37.0,
+        "elbow_flexion_deg": 33.0,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -51.0,
+        "wrist_flexion_deg": 11.0,
+        "wrist_deviation_deg": 2.0,
+        "wrist_axial_error_deg": -2e-05,
+        "min_head_or_torso_clearance": 2.486,
+        "socket_position_m": [
+          -0.1618021,
+          0.2333142,
+          0.9021121
+        ],
+        "pelvis_position_m": [
+          -0.0436815,
+          0.0357852,
+          0.8672815
+        ]
+      },
+      {
+        "frame": 21,
+        "shoulder_elevation_deg": 26.9,
+        "shoulder_axial_deg": -34.438,
+        "elbow_flexion_deg": 27.75,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -47.15,
+        "wrist_flexion_deg": 8.787,
+        "wrist_deviation_deg": 0.375,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 1.967,
+        "socket_position_m": [
+          -0.0906726,
+          0.2058828,
+          0.8630345
+        ],
+        "pelvis_position_m": [
+          -0.036,
+          0.029,
+          0.873
+        ]
+      },
+      {
+        "frame": 22,
+        "shoulder_elevation_deg": 20.544,
+        "shoulder_axial_deg": -30.0,
+        "elbow_flexion_deg": 22.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -43.0,
+        "wrist_flexion_deg": 7.0,
+        "wrist_deviation_deg": -1.0,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 1.685,
+        "socket_position_m": [
+          -0.0095501,
+          0.1865081,
+          0.8316019
+        ],
+        "pelvis_position_m": [
+          -0.0283926,
+          0.0224889,
+          0.8789926
+        ]
+      },
+      {
+        "frame": 23,
+        "shoulder_elevation_deg": 16.237,
+        "shoulder_axial_deg": -24.222,
+        "elbow_flexion_deg": 18.26,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -39.399,
+        "wrist_flexion_deg": 5.794,
+        "wrist_deviation_deg": -1.832,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 1.521,
+        "socket_position_m": [
+          0.0496024,
+          0.1650394,
+          0.8182756
+        ],
+        "pelvis_position_m": [
+          -0.0203407,
+          0.0158667,
+          0.8855408
+        ]
+      },
+      {
+        "frame": 24,
+        "shoulder_elevation_deg": 13.308,
+        "shoulder_axial_deg": -17.778,
+        "elbow_flexion_deg": 15.187,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -35.977,
+        "wrist_flexion_deg": 4.855,
+        "wrist_deviation_deg": -2.442,
+        "wrist_axial_error_deg": -0.0,
+        "min_head_or_torso_clearance": 1.437,
+        "socket_position_m": [
+          0.1030797,
+          0.1432949,
+          0.8108982
+        ],
+        "pelvis_position_m": [
+          -0.013,
+          0.01,
+          0.892
+        ]
+      },
+      {
+        "frame": 25,
+        "shoulder_elevation_deg": 11.636,
+        "shoulder_axial_deg": -12.0,
+        "elbow_flexion_deg": 13.0,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -33.0,
+        "wrist_flexion_deg": 4.0,
+        "wrist_deviation_deg": -3.0,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 1.399,
+        "socket_position_m": [
+          0.1462533,
+          0.1204545,
+          0.8079685
+        ],
+        "pelvis_position_m": [
+          -0.0071625,
+          0.005825,
+          0.898425
+        ]
+      },
+      {
+        "frame": 26,
+        "shoulder_elevation_deg": 10.744,
+        "shoulder_axial_deg": -6.667,
+        "elbow_flexion_deg": 11.993,
+        "elbow_hinge_axis_error_deg": 1e-05,
+        "forearm_roll_deg": -30.264,
+        "wrist_flexion_deg": 3.032,
+        "wrist_deviation_deg": -3.66,
+        "wrist_axial_error_deg": 0.0,
+        "min_head_or_torso_clearance": 1.376,
+        "socket_position_m": [
+          0.1757314,
+          0.0985842,
+          0.8078641
+        ],
+        "pelvis_position_m": [
+          -0.003,
+          0.003,
+          0.904
+        ]
+      },
+      {
+        "frame": 27,
+        "shoulder_elevation_deg": 10.468,
+        "shoulder_axial_deg": -2.0,
+        "elbow_flexion_deg": 11.871,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -27.975,
+        "wrist_flexion_deg": 2.148,
+        "wrist_deviation_deg": -4.27,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 1.365,
+        "socket_position_m": [
+          0.1931973,
+          0.0819537,
+          0.8092506
+        ],
+        "pelvis_position_m": [
+          -0.0006875,
+          0.000875,
+          0.908125
+        ]
+      },
+      {
+        "frame": 28,
+        "shoulder_elevation_deg": 10.47,
+        "shoulder_axial_deg": -0.0,
+        "elbow_flexion_deg": 11.978,
+        "elbow_hinge_axis_error_deg": 2e-05,
+        "forearm_roll_deg": -27.015,
+        "wrist_flexion_deg": 1.762,
+        "wrist_deviation_deg": -4.537,
+        "wrist_axial_error_deg": 1e-05,
+        "min_head_or_torso_clearance": 1.363,
+        "socket_position_m": [
+          0.1991368,
+          0.0753831,
+          0.8103717
+        ],
+        "pelvis_position_m": [
+          0.0,
+          0.0,
+          0.91
+        ]
+      }
+    ]
+  }
+}

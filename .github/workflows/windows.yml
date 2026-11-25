@@ -1,0 +1,20 @@
+name: Windows build
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  package-native:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -A x64 -DBUILD_TESTING=ON
+      - run: cmake --build build --config Release --parallel
+      - run: ctest --test-dir build -C Release --output-on-failure
+      - run: cmake --install build --config Release --prefix mod --component ThrowObjectRuntime
+      - run: python tools/make_esm.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: throw-object-native-staging
+          path: |
+            mod/
+            build/Release/ThrowObject.pdb

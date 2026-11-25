@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnimationSet version="6" id="ThrowObject">
+  <Start key="F6" cooldown="0.20" to="Hold"/>
+  <Action id="Hold" clip="Animations\ThrowObject\ThrowObject_Hold.hkx" enter="0.12" loop="true" maxHold="30">
+    <Transition to="Throw" key="F7" blend="0.03"/>
+    <Transition end="true" key="F8"/>
+    <Exit blend="0.12"/>
+  </Action>
+  <Action id="Throw" clip="Animations\ThrowObject\ThrowObject_Throw.hkx">
+    <Exit at="end" blend="0.15"/>
+  </Action>
+</AnimationSet>

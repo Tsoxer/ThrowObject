@@ -1,0 +1,34 @@
+{
+  "name": "Carry",
+  "description": "Active only with a Throw Object reference in the player's hand.",
+  "priority": 2147483647,
+  "interruptible": true,
+  "hasCustomBlendTimeOnInterrupt": true,
+  "blendTimeOnInterrupt": 0.1,
+  "replaceOnLoop": true,
+  "replaceOnEcho": true,
+  "conditions": [
+    {
+      "condition": "IsForm",
+      "requiredVersion": "1.0.0.0",
+      "Form": {
+        "pluginName": "Skyrim.esm",
+        "formID": "000014"
+      }
+    },
+    {
+      "condition": "CompareValues",
+      "requiredVersion": "1.0.0.0",
+      "Value A": {
+        "form": {
+          "pluginName": "ThrowObject.esm",
+          "formID": "000800"
+        }
+      },
+      "Comparison": "==",
+      "Value B": {
+        "value": 1.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "fps": 30,
+  "clips": {
+    "hold": {
+      "name": "ThrowObject_Hold",
+      "endFrame": 60,
+      "loop": true
+    },
+    "throw": {
+      "name": "ThrowObject_Throw",
+      "endFrame": 28,
+      "loop": false
+    },
+    "pickup": {
+      "name": "ThrowObject_PickUp",
+      "label": "Pick Up",
+      "endFrame": 45,
+      "loop": false,
+      "next": "hold"
+    },
+    "walk": {
+      "name": "ThrowObject_CarryWalk",
+      "label": "Carry Walk",
+      "endFrame": 36,
+      "loop": true,
+      "travelM": 1.32,
+      "speedMps": 1.1,
+      "stanceFraction": 0.62
+    },
+    "jog": {
+      "name": "ThrowObject_CarryJog",
+      "label": "Carry Jog",
+      "endFrame": 24,
+      "loop": true,
+      "travelM": 2.12,
+      "speedMps": 2.65,
+      "stanceFraction": 0.41
+    },
+    "sprint": {
+      "name": "ThrowObject_CarrySprint",
+      "label": "Carry Sprint",
+      "endFrame": 18,
+      "loop": true,
+      "travelM": 2.66,
+      "speedMps": 4.433333333333334,
+      "stanceFraction": 0.32
+    }
+  },
+  "locomotion": {
+    "groundY": 0.024526983499526978,
+    "mode": "in-place",
+    "cycleStart": "right-foot contact"
+  },
+  "pickup": {
+    "frame": 22,
+    "seconds": 0.7333333333333333,
+    "event": "ThrowObjectGrab",
+    "groundY": 0.024526983499526978
+  },
+  "release": {
+    "frame": 15,
+    "seconds": 0.5,
+    "event": "ThrowObjectRelease"
+  },
+  "attachment": {
+    "previewNode": "ThrowObjectSocket",
+    "gameBone": "NPC R Hand [RHnd]",
+    "socketOffsetM": [
+      0.005,
+      0.093,
+      0.065
+    ]
+  }
+}
