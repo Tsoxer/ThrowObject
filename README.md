@@ -84,7 +84,7 @@ This export uses the native source, dependency pins, and build scripts from the 
 - The upgrade audit compared the original carry FormID, held-item and tolerance co-save readers, default controls, and all 84 installed HKX files against v0.0.15.
 - In-game testing confirmed the hidden weapon near-miss behavior in RC2 and crossbow pickup in RC3. The v0.0.15 save checks covered record compatibility.
 
-SHA-256 for the retained MO2 archive, `Throw Object v0.3.9 RC3.zip`
+SHA-256 for the retained MO2 archive, `Throw Object v0.3.9.zip`
 
 ```text
 2bf1c5bd5142732fddb475c57751b6f93e1f95f93c6d130a0a5438e390a9898f
