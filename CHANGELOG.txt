@@ -1,7 +1,7 @@
 THROW OBJECT
 Development changelog
 Started 11/21/2026
-Current release v0.0.15, 11/24/2026
+Current release candidate v0.3.9 RC3, 11/26/2026
 Author/Director/Tester: Tsoxer
 Programmer/Debugger: Codex (OpenAI)
 
@@ -291,3 +291,270 @@ target throughout gameplay development is SE/AE Steam 1.6.1170.
 - Consolidated installation, compatibility, known issues and safe
   uninstall instructions into README.txt. The MO2 ZIP includes
   README.txt, CHANGELOG.txt and the required license notices.
+
+11/25/2026 — v0.1.0
+-------------------
+- Sneak throws use eligible vanilla discovery or search dialogue for
+  unaware NPCs and preserve their flinch. Each NPC uses their own voice.
+- Allow loose one-handed melee weapons, helmets, gloves, and boots with
+  compatible world meshes. Tune their flight using the existing weight,
+  shape, and drag model. Keep two-handed weapons, shields, and body armor
+  outside the pickup list.
+- Add the enabled-by-default SKSE menu option for one-handed weapons to
+  use ordinary swing damage, target resistance, and charged on-hit
+  enchantments on the first valid NPC hit. Sneak and power-attack bonuses
+  are excluded. Disabling the option restores the physics calculation.
+  Tolerance and protected-target safeguards still apply.
+- Keep the v0.0.15 master, animation files, and SKSE save record formats.
+  The weapon damage option is stored in the existing user INI.
+
+11/25/2026 — v0.1.1
+-------------------
+- Use Skyrim's native detection event for sneak hits and close misses
+  near unaware NPCs. Normal search behavior selects the NPC's own
+  dialogue, when available. Carry and throw still use the original
+  animations.
+- Add shape-aware fallback clearance for obstructed third-person
+  one-handed weapon throws. Try nearby release points while preserving
+  player and scenery checks.
+- With melee mode on, the first qualifying one-handed weapon hit uses
+  half the normal physical swing damage. Every one-handed weapon hit
+  fills a friendly target's tolerance and triggers the threshold
+  response with either damage setting. The meter can briefly show full
+  when the hit turns the target hostile. Other objects count one hit
+  at a time.
+- Preserve the v0.1.0 ESM, animation assets, default settings, and
+  v0.0.15-compatible SKSE co-save formats.
+
+11/25/2026 — v0.1.2
+-------------------
+- Credit Tsoxer and add default control instructions in the MO2 plugin
+  header. Keep the master flags, master list, and carry global FormID.
+- Use oriented bounds and nearby raised clearance points for any
+  eligible item when the normal third-person throw is blocked. Check
+  the initial release space and leave the object held if no safe point
+  is available. Preserve first-person throws and drop behavior.
+- Play installed suspicion recordings that match the unaware NPC's
+  voice type. Retain the native detection event when audio is
+  unavailable and keep the existing flinch and combat rules.
+- Label the weapon option with its 50% normal swing value, confirmed
+  in v0.1.1 gameplay testing. Preserve the damage calculations
+  and first-hit tolerance escalation in both modes.
+- Keep the six original animations, bindings, and SKSE co-save formats.
+
+11/25/2026 — v0.1.3
+-------------------
+- Trace the reported sneak-throw crash to the native DLL's voice-type
+  virtual call and read the actor's voice record directly. Keep sneak
+  flinches and installed suspicion audio without a forced detection event.
+- Accept resting one-handed weapon bodies on weapon and clutter layers.
+  Use the same physics recovery for eligible pickaxes when thrown.
+  Include the base form ID in pickup rejection diagnostics.
+- Keep the tested stairs and clutter clearance, animations, damage modes,
+  ThrowObject.esm and SKSE save formats from v0.1.2.
+
+11/25/2026 — v0.1.4
+-------------------
+- Remove direct voice playback for sneak throws after the v0.1.3 log
+  traced a queued suspicion clip to the time of an audio worker crash.
+  Keep flinches and ordinary standing reactions.
+- Correct equipment eligibility for Skyrim's standard Pickaxe
+  (000E3C16). Apply the same reference and physics checks as for other
+  eligible one-handed items in both camera views.
+- Keep v0.1.3's master, animations, settings, and save formats.
+
+11/25/2026 — v0.1.5
+-------------------
+- Give weapons and armor a nearby drop origin in both views, using
+  oriented clearance and floor height. Preserve ordinary clutter
+  drops and all throw trajectories.
+- Restore voiced suspicion during sneak throws with Skyrim's native
+  3D dialogue mixer. Follow the speaking NPC and pass the correctly
+  typed sound output interface on Steam 1.6.1170.
+- Keep the confirmed pickaxe pickup and v0.1.4 save formats.
+
+11/25/2026 — v0.1.6
+-------------------
+- Make all third-person drops fall from the hand. Weapons and armor
+  use oriented clearance at the held position.
+- Apply the v0.1.5 nearby floor placement to all first-person drops.
+- Record v0.1.5 as the live-tested baseline for sneak suspicion
+  dialogue. Preserve that playback and the v0.1.5 save format.
+
+11/25/2026 — v0.1.7
+-------------------
+- Let first-person drops appear in front of the player before falling
+  under gravity. Check camera, player and scenery clearance, then use
+  the existing near-feet drop if a visible release will not fit.
+- Preserve third-person drops, throws, suspicion dialogue and the save
+  format from v0.1.6.
+
+11/25/2026 — v0.1.8
+-------------------
+- Correct the release center for scaled equipment visuals in third
+  person. Try nearby hand-height positions when the visible center is
+  blocked. Keep zero launch velocity and the original item reference.
+- Preserve first-person drops and third-person clutter drops confirmed
+  on v0.1.7, along with throwing, suspicion dialogue, and save formats.
+- Tsoxer confirmed all four camera and item combinations in Skyrim,
+  including natural third-person equipment drops. This is the stable
+  baseline for v0.2.0.
+
+11/25/2026 — v0.2.0
+-------------------
+- Give eligible one-handed weapons end-over-end Havok rotation on
+  release in both camera modes. Target 2.5 rotations per second and use
+  the weapon bounds to select its length axis. Vanilla and modded
+  weapons share the same eligibility checks, including pickaxes.
+- Carry forward v0.1.8 linear throw physics, damage calculations,
+  drop behavior, and save compatibility.
+- Tsoxer confirmed the throw spin in Skyrim and selected v0.2.0 as the
+  new stable baseline.
+
+11/25/2026 — v0.2.1
+-------------------
+- Seat one-handed weapons in the right palm in third person. Use the
+  skeleton's weapon node for position and angle, and infer the handle
+  for meshes with an offset origin or alternate shaft axis.
+- Let the original reference drop from that visible pose when clear,
+  with the v0.2.0 near-hand placement as a fallback.
+
+11/26/2026 — v0.2.2
+-------------------
+- Use the original world model scale for held third-person one-handed
+  weapons, including swords. Account for the hand bone's inherited scale.
+- Anchor daggers in the palm and align the blade across the forearm
+  axis. Axes, maces, and swords keep their v0.2.1 grip orientation.
+
+11/26/2026 — v0.2.3
+-------------------
+- Reserve suspicion dialogue for hidden sneak throws. Check Skyrim's
+  detection level across observers when an NPC reacts. Detected
+  crouching throws use the existing normal collision dialogue.
+- Tsoxer confirmed the reaction switch in Skyrim and selected v0.2.3
+  as the stable baseline for v0.3.0.
+
+11/26/2026 — v0.3.0
+-------------------
+- Add environmental distractions for hidden sneak throws with eligible
+  items other than one-handed weapons. Nearby NPCs can hear the item
+  from any direction and share the same landing spot.
+- Use the NPC's positional suspicion voice, vanilla navmesh walking,
+  and a 3–6 second kneeling inspection. Then reevaluate the actor's
+  regular package. Combat and scripted scenes can take precedence.
+- Keep investigation state temporary. Clean up before saving or
+  loading and carry forward the v0.2.3 save format.
+
+11/26/2026 — v0.3.1
+-------------------
+- The v0.3.0 game log confirmed suspicion audio and an ingot hit with no
+  investigation handoff. Use observed resting position and a bounded
+  ground-contact wait to reach the walking stage.
+- Keep witnesses who noticed the throw while the player was hidden.
+  Log witness capture, landing, walk requests, idle, and AI release.
+- Default kneeling to 6–9 seconds and add adjustable minimum and maximum
+  in SKSE Menu Framework. Retry an interrupted walk once and reevaluate
+  the actor's existing AI package after the temporary inspection.
+
+11/26/2026 — v0.3.2
+-------------------
+- Require a closed sneak eye while crouched at release for any new
+  investigation. Preserve the release eligibility during physics retries.
+- Route both hits and near-miss flinches to a nearby inspection. If the
+  object settles beside the NPC, face it and kneel without a walk request.
+- Try the actor's regular crouch when the vanilla kneeling idle is
+  unavailable. Keep the saved 6–9 second default range and cleanup rules.
+
+11/26/2026 — v0.3.3
+-------------------
+- Keep queued hits and near misses through flinch recovery. If a walking
+  NPC passes the settling object, approach its final Havok position.
+- Retry interrupted movement and keep the actor in place during the
+  inspection. Release movement to the current vanilla or modded AI.
+- Use the vanilla kneeling entry and stand-up animations with a fixed
+  deadline for each inspection. Keep the default range at 6–9 seconds.
+- Carry forward the v0.3.2 master, settings, and save record formats.
+
+11/26/2026 — v0.3.4
+-------------------
+- Offer temporary Travel and Hold Position packages at the engine's
+  alias-package selection step. Let normal civilian schedules resume
+  after the investigation. Preserve combat and active scripted scenes.
+- Trigger the vanilla kneeling graph event once the NPC stops. Send the
+  stand-up event at the end of the configured 6–9 second default range.
+- Log package selection, approach timeouts, kneel acceptance, and release.
+- Add standalone travel records to the existing ESL-flagged master at new
+  local FormIDs. Keep the old carry record and SKSE co-save format.
+  Release package claims and remove temporary waypoints before saves.
+
+11/26/2026 — v0.3.5
+-------------------
+- Keep the confirmed closed-eye distraction and Travel approach from
+  v0.3.4. Replace the guard's weapon-drawn hold with a neutral package.
+- Start the kneeling entry after stopping and sheathing. Confirm the
+  lowered pose before timing the configured hold. Retry with Skyrim's
+  instant kneel if the animated entry fails.
+- Append the inspection hold package at local FormID 000830. Preserve
+  existing master records, co-save formats and pre-save cleanup.
+
+11/26/2026 — v0.3.6
+-------------------
+- Default kneeling to 4–7 seconds. Adopt the new default for older
+  saved 6–9 ranges and carry forward other user settings.
+- Include NPCs using vanilla furniture and package idles in hidden
+  throw investigations. Let Skyrim release the interaction before
+  approaching the item, then return control to normal AI afterward.
+- Keep the v0.3.5 master and co-save format. Clear the temporary AI
+  offer and any navigation marker before saving.
+
+11/26/2026 — v0.3.7
+-------------------
+- Fit the carry grips for iron swords, daggers, maces and war axes,
+  pickaxes, and Riekling spears. Preserve their full world size.
+- Allow staves to be picked up, dropped, and thrown. Use physical impact
+  damage for staves. Keep the half-swing option specific to one-handed
+  melee weapons.
+- Use oriented clearance and a ground fallback for third-person arrow
+  drops. Keep the original reference and stack.
+- Preserve the v0.3.6 master, carry recovery, and tolerance co-save schema.
+
+11/26/2026 — v0.3.8
+-------------------
+- Align iron swords, daggers, maces, war axes and pickaxes by the handle
+  in the existing one-handed carry pose. Fit the shaft axis using the
+  loaded mesh when available and keep its original scale.
+- Match actual staff particle types so the solid mesh survives pickup
+  at the grab frame. Keep the original reference and physical damage.
+- Carry forward third-person arrow and arrow stack drops, ThrowObject.esm,
+  and the existing carry recovery and tolerance co-save formats.
+
+11/26/2026 — v0.3.9 RC1
+---------------------------
+- Add pickup, carry, drop, and throwing for backpacks and crossbows.
+  Recognize Creation Club and mod-added backpacks through their record
+  metadata. Use Skyrim's crossbow weapon type for crossbows.
+- Add weight-and-impact flight profiles for both. Crossbow hits use the
+  existing thrown-weapon reactions. Keep the half-swing option scoped to
+  one-handed melee weapons.
+- Let nearby NPCs investigate where a hidden one-handed melee throw comes
+  to rest. NPCs hit by that weapon keep the direct-hit combat reaction.
+- Check the v0.0.15 carry record, co-save payloads, controls, and animation
+  assets for upgrade compatibility. Retain the v0.3.8 master and assets.
+
+11/26/2026 — v0.3.9 RC2
+----------------------
+- Carry crossbow geometry with local transform controllers by freezing
+  the cloned render leaves at the world model's current pose.
+- Retain witnesses from a hidden one-handed melee weapon near miss
+  through landing. Use the normal inspection package. A subsequent hit
+  releases that weapon's inspection on the struck NPC before combat.
+- Preserve the master and co-save records. Recheck the v0.0.15 and
+  RC1 upgrade paths in the build workspace.
+
+11/26/2026 — v0.3.9 RC3
+----------------------
+- Read the render data from skinned crossbow partitions and stage the
+  carried mesh against private bone nodes. The original reference remains
+  the source of its item data and release physics.
+- Preserve the v0.0.15 co-save records and carry FormID. Keep RC2's
+  investigation behavior.

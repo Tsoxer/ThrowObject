@@ -13,6 +13,8 @@ namespace
 {
 const fs::path defaultsPath{L"Data/SKSE/Plugins/ThrowObject.ini"};
 const fs::path userPath{L"Data/SKSE/Plugins/ThrowObject.user.ini"};
+constexpr char kneelDefaultsRevisionKey[] = "investigation_kneel_defaults_revision";
+constexpr unsigned kneelDefaultsRevision = 1;
 std::mutex lock;
 Settings settings;
 
@@ -36,6 +38,7 @@ void sanitize(Settings& s)
     bound(s.maxDamage,0,100,25);
     bound(s.reactDistance,20,230,95);
     bound(s.reactCooldown,2,60,9);
+    s.investigationKneel = kneelDuration(s.investigationKneel);
     s.bounty = std::clamp(s.bounty,0,1000);
     const auto range = toleranceRange(s.toleranceMin,s.toleranceMax);
     s.toleranceMin = range.minimum;
@@ -57,7 +60,10 @@ void fields(Stream& stream,S& s,Field field)
     field(stream,"hand_pitch",s.angles[0]); field(stream,"hand_roll",s.angles[1]); field(stream,"hand_yaw",s.angles[2]);
     field(stream,"hand_visual_scale",s.handSize); field(stream,"damage_multiplier",s.damageScale);
     field(stream,"damage_cap",s.maxDamage); field(stream,"reaction_distance",s.reactDistance);
+    field(stream,"weapon_melee_damage",s.weaponMeleeDamage);
     field(stream,"reaction_cooldown",s.reactCooldown); field(stream,"bounty",s.bounty);
+    field(stream,"investigation_kneel_min_seconds",s.investigationKneel.minimum);
+    field(stream,"investigation_kneel_max_seconds",s.investigationKneel.maximum);
     field(stream,"reaction_topic_form_id",s.reactionTopic);
     field(stream,"tolerance_min",s.toleranceMin);
     field(stream,"tolerance_max",s.toleranceMax);
@@ -75,6 +81,7 @@ Settings getSettings()
 void loadSettings()
 {
     Settings next;
+    unsigned savedKneelDefaults{};
     for (const auto& path : {defaultsPath,userPath}) {
         std::ifstream input(path);
         for (std::string line; std::getline(input,line);) {
@@ -82,6 +89,10 @@ void loadSettings()
             if (split == std::string::npos) continue;
             const auto key = line.substr(0,split);
             std::istringstream value(line.substr(split+1));
+            if (path==userPath && key==kneelDefaultsRevisionKey) {
+                value >> savedKneelDefaults;
+                continue;
+            }
             fields(value,next,[&key](auto& in,const char* name,auto& destination) {
                 if (key != name) return;
                 auto parsed = destination;
@@ -89,6 +100,7 @@ void loadSettings()
             });
         }
     }
+    next.investigationKneel = migrateKneelDefaults(next.investigationKneel,savedKneelDefaults);
     sanitize(next);
     const std::scoped_lock guard(lock);
     settings = next;
@@ -96,6 +108,8 @@ void loadSettings()
                     bindingName(settings.keys[0]),bindingName(settings.keys[1]),bindingName(settings.keys[2]));
     SKSE::log::info("Tolerance meter starts {} (corner {})",
                     settings.toleranceMeter ? "enabled" : "disabled",settings.toleranceMeterCorner);
+    SKSE::log::info("Investigation kneel range: {:.1f}–{:.1f} seconds",
+                    settings.investigationKneel.minimum,settings.investigationKneel.maximum);
 }
 
 namespace
@@ -109,6 +123,7 @@ bool saveLocked(Settings next)
     {
         std::ofstream out(temporary,std::ios::trunc);
         fields(out,next,[](auto& file,const char* name,const auto& value) { file<<name<<'='<<value<<'\n'; });
+        out<<kneelDefaultsRevisionKey<<'='<<kneelDefaultsRevision<<'\n';
         out.close();
         if (!out) {
             SKSE::log::error("Could not write ThrowObject.user.ini temporary file");

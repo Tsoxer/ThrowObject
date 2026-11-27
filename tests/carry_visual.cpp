@@ -38,10 +38,16 @@ int main()
     using Instance = std::pair<std::string,int>;
     std::vector<Instance> attempts;
     std::string failClone;
-    const auto stage = [&](const ModelNode* root) {
+    const auto stage = [&](const ModelNode* root, bool crossbow = false) {
         attempts.clear();
         return copyCarryGeometry(root,Transform{},true,
-            [](const ModelNode& node) { return node.state; },
+            [&](const ModelNode& node) {
+                auto state = node.state;
+                state.canFreezeTransform &= crossbow;
+                if (state.kind==VisualNodeKind::skinnedMesh && !crossbow)
+                    state.kind = VisualNodeKind::unsupported;
+                return state;
+            },
             [](const ModelNode& node) -> const auto& { return node.children; },
             [](const ModelNode& node) -> Transform { return {node.offset}; },
             [&](const ModelNode& node, Transform pose) {
@@ -81,6 +87,16 @@ int main()
     inner.state = mesh;
     inner.state.hasAnimation = true;
     CHECK(stage(&complex)==VisualResult::unsupported && attempts.size()==1);
+    CHECK(stage(&complex,true)==VisualResult::unsupported && attempts.size()==1);
+    // A crossbow's stock can have a local transform controller. It can be
+    // snapshotted only when the renderer is loaded and the leaf has no Havok.
+    inner.state.canFreezeTransform = true;
+    CHECK(stage(&complex)==VisualResult::unsupported && attempts.size()==1);
+    CHECK(stage(&complex,true)==VisualResult::ready && attempts.size()==2);
+    CHECK(inner.state.hasAnimation);
+    inner.state.hasCollision = true;
+    CHECK(stage(&complex,true)==VisualResult::unsupported && attempts.size()==1);
+    inner.state.hasCollision = false;
     inner.state.hasAnimation = false;
     inner.state.hasRenderer = false;
     CHECK(stage(&complex)==VisualResult::unavailable && attempts.size()==1);
@@ -91,6 +107,21 @@ int main()
     CHECK(stage(static_cast<ModelNode*>(nullptr))==VisualResult::unavailable && attempts.empty());
     const ModelNode empty{"No loaded children",0,collisionBranch,{}};
     CHECK(stage(&empty)==VisualResult::hidden && attempts.empty());
+
+    // RC2 rejected each of these shapes because the mesh had no standalone
+    // renderer. The crossbow adapter supplies the skin partition's renderer.
+    ModelNode crossbow{"Crossbow world root",9,collisionBranch,{}};
+    crossbow.children.push_back(std::make_unique<ModelNode>(ModelNode{
+        "Crossbow:0",4,{VisualNodeKind::skinnedMesh,true,false,false,true},{}}));
+    auto& skin = *crossbow.children.back();
+    CHECK(stage(&crossbow)==VisualResult::unsupported && attempts.empty());
+    CHECK(stage(&crossbow,true)==VisualResult::ready);
+    CHECK((attempts==std::vector<Instance>{{"Crossbow:0",4}}));
+    skin.state.hasRenderer = false;
+    CHECK(stage(&crossbow,true)==VisualResult::unavailable && attempts.empty());
+    skin.state.hasRenderer = true;
+    skin.state.hasCollision = true;
+    CHECK(stage(&crossbow,true)==VisualResult::unsupported && attempts.empty());
 
     // Ordinary movement and vanilla E do not request a custom pickup or drop.
     CHECK(!matchingAction(defaultBindings,32));  // D

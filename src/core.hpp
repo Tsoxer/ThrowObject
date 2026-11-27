@@ -42,6 +42,12 @@ constexpr Phase transition(Phase phase, Event event)
 constexpr int fps = 30, grabFrame = 22, pickupEndFrame = 45, releaseFrame = 15, throwEndFrame = 28;
 constexpr float pickupTimeout = 2.2f;
 
+constexpr bool useSuspicionVoice(bool sneakThrow, bool stillSneaking, bool actorUnaware,
+                                  std::optional<std::int16_t> highestDetection)
+{
+    return sneakThrow && stillSneaking && actorUnaware && highestDetection && *highestDetection<=0;
+}
+
 constexpr bool sameCarryArea(std::uint32_t sourceCell, std::uint32_t sourceWorld,
                              std::uint32_t playerCell, std::uint32_t playerWorld)
 {

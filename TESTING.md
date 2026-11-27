@@ -1,5 +1,326 @@
 # Testing
 
+## v0.3.9 RC3 skinned crossbows
+
+- Repeat the failed RC2 pickup with the Iron Crossbow and the modded crossbow. The RC2 log identified the main skinned BSTriShape leaves and showed no standalone renderer. In RC3 check that both crossbows appear when picked up in first and third person. Switch views, then drop, throw, and pick the original reference up again.
+- Reopen a paired v0.0.15 save and SKSE co-save. Verify the prior held-reference recovery and tolerance counts. Save and reload while holding a crossbow in RC3 and verify that the original item is restored to the world.
+- The host regression checks cover a detached skinned geometry leaf, missing partition data, and a collision-bearing leaf. The renderer and game save reload require Skyrim 1.6.1170.
+
+## v0.3.9 RC2 crossbows and one-handed near misses
+
+- RC1 log reproduction: pick up the objects with base forms 0200D0C3 and 223DD3B6 in the reporting load order. Both reached the grab frame and failed in render staging. In RC2 verify the full model appears in either camera view. Drop, throw, and pick up the original crossbow again.
+- Throw a sword, dagger, war axe, and mace past an eligible NPC while hidden. Verify that a guard who hears the pass still investigates if the weapon bounces away from the original hearing radius. Test a first landing near an NPC with no close pass, standing throws, and throws with the sneak eye open.
+- Repeat with a direct hit or a bounce that strikes a witness. Verify that the hit NPC aggroes, and the NPC who was missed can investigate.
+- Load existing v0.0.15 and RC1 saves with their original co-saves. Confirm that tolerance data loads and a held object is restored. Save and reload while carrying a crossbow, then compare charge, tempering, and ownership on the restored reference.
+- The RC1 log showed a successful suspicion voice followed by zero weapon witnesses at rest. The host regression checks cover the pass radius and direct-hit exclusion, plus the controlled render-leaf policy. In-game behavior requires Skyrim.
+
+## v0.3.9 RC1 release checks
+
+- Pick up a Creation Club backpack and a mod-added backpack with G. Try both cameras and re-pick up the same object after dropping or throwing it. Check that a slot-47 cloak or lantern stays ineligible.
+- Repeat with a Dawnguard crossbow, an enchanted or tempered crossbow, and a mod-added crossbow. Verify the thrown weapon returns as the original reference with its extras. Compare with a bow and two-handed melee weapon to verify the eligibility boundary.
+- With the 50% melee-swing option on and off, throw either new category at an eligible target. Their impact should use the weight-and-impact calculation. A backpack can distract during a hidden throw. A crossbow uses the existing thrown-weapon reaction.
+- With the sneak eye closed, land a sword, dagger, war axe, and mace near an NPC. Verify suspicion, the walk and kneel, and resumed AI. Repeat with a direct hit, including a bounce into the original target, and verify combat for the NPC who was hit. Try a near miss while detected and verify it starts no inspection.
+- Run the v0.0.15 checks for carry across cells, ordinary Activate, theft, impact, same-day tolerance, first- and third-person release, and save/load while holding. Load a v0.0.15 save and a v0.3.8 save. Check the original held object and tolerance counts after recovery.
+- The master and existing save payloads are fixture-checked in the build workspace. Pickup, clearance, appearance, and save migration still need Skyrim 1.6.1170.
+
+## v0.3.8 one-handed grips and staff pickup
+
+- In third person pick up an iron sword, dagger, war axe, mace, and pickaxe. Check the palm around the handle, the facing of the blade or head, and the original model size. Compare an iron mesh replacer with a working non-iron weapon.
+- Pick up the Dragon Priest staff (base 00029B82) and a regular staff with G in first and third person. Verify ThrowObject.log reports a cloned solid render leaf and a completed grab. Drop, throw, and pick it up again. Confirm its original charge and physical throw damage.
+- Drop a single arrow and an arrow stack in third person and verify their counts. Load a v0.3.7 save. Save while holding a staff and verify recovery of the original reference after reloading.
+
+The grip tests cover a replacer rotated away from the record's axis, an
+offset handle, and the fallback for models without readable triangles.
+
+## v0.3.7 grips, staves, and ammunition drops
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Iron grips | Carry iron swords, daggers, maces, and war axes in third person. Check that their handles meet the palm while standing and walking. Compare ordinary steel or Nordic grips and a woodcutter's axe, fork, and knife with v0.3.6. |
+| Pickaxe and spear | Confirm the pickaxe haft crosses the palm. Confirm the Riekling spear is held by the shaft with its point away from the arm. Check full world model scale before and after dropping. |
+| Staff | Pick up, drop, throw, and recover a regular staff and a staff with attached magic effects. Compare throw damage with the melee toggle on and off. The staff should deal the same physical damage for equivalent hits. |
+| Arrow drops | Drop a single Steel Arrow and a stack in third person. Verify the original amount can be picked up after the drop. Repeat against a wall or next to furniture where the ground fallback may be needed. |
+| Save upgrade | Load a v0.3.6 save. Save while holding an arrow stack or staff and reload. Check recovery of the original reference, stack count, charge, and existing tolerance data. |
+
+The host suite checks fitted grip points and the shape-aware clearance
+case for a long arrow bundle. The grip alignment, asset compatibility and
+save/reload checks require Skyrim.
+
+## v0.3.6 leaving furniture and package idles
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Furniture | While hidden, toss an object near an NPC cooking, smithing, using a workbench, or sitting. Verify that they exit the station, approach the item, kneel for 4–7 seconds, stand up and resume their normal routine. |
+| Invisible markers and idles | Repeat with a table or rail lean, and with a reading or writing idle outside a scripted scene. Test an NPC with a nearby landing and another who needs to walk after exiting. |
+| Fallback and cancellation | Try a slow furniture exit. Verify the actor is free before approaching. Pick up the thrown item during an exit and check that the actor can resume their schedule. |
+| Upgrade and save | Reopen a v0.3.5 save. Save during a furniture exit, during the walk and during the kneel. Reload and check the prior carry/tolerance data and that the NPC is again controlled by its own schedule. |
+| Settings and eligibility | Test the new default, a migrated legacy 6–9 pair, and a saved custom range. Confirm that standing and detected throws do not start a distraction. |
+
+- [Skyrim Creation Kit furniture record](https://tesck.ru/index.php/Furniture)
+- [Vanilla lean and craft markers](https://skyrimeasy.blog-rpg.com/ckworks/furniture01)
+- [Native furniture get-up and quick exit bindings](https://ng.commonlib.dev/Actor_8h_source.html)
+
+## v0.3.5 kneel after approach
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Guard with a sheathed weapon | Toss an ingot while hidden. Confirm the guard walks to the item, keeps the weapon sheathed, and kneels at the landing spot. |
+| NPC with a drawn weapon | Verify that the NPC finishes sheathing before kneeling. Verify their previous stance and routine resume on release. |
+| Hold and stand | Confirm `kneeling pose reached` in ThrowObject.log. Time the hold from the kneeling pose. Check the stand-up and the return to normal AI. |
+| Interrupt | Start actual combat or pick the object up before the hold ends. Confirm the investigation releases the NPC. |
+| Upgrade and save | Load a v0.3.4 save. Save and reload during the walk and again during the kneel. Verify the NPC's normal AI and the existing carry and tolerance data. |
+
+Startup should report `32/32 travel packages` and a nonzero neutral hold
+package ID. The neutral hold is a private instance of Skyrim's
+HoldPosition template. Its general flags leave both weapon flags clear.
+The host tests cover pose height confirmation. The visible animation
+still requires a game check.
+
+- [HoldPosition template data and vanilla Weapon Drawn flag](https://github.com/bryantmh/tes4skyrim/blob/master/tes5_import/packages/stand_still.py)
+- [Kneeling graph events](https://elderscrolls.fandom.com/wiki/Console_Commands_(Skyrim)/Idle_Animations)
+
+## v0.3.4 priority investigation packages
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Setup | Use the ESM and DLL from the same release. ThrowObject.log should show `32/32 travel packages` and a nonzero hold package ID. |
+| Walking witness | While hidden, throw a gold ingot past walking Commander Caius so it stops away from his route. Look for `travel package selected`. Verify that he turns, walks to the actual landing point, kneels, and resumes his route. Repeat with a hit below the tolerance limit. |
+| Stationary witness | While hidden, use a near miss beside a Dragonsreach entrance guard. Verify the down-to-the-knees pose, the hold at the landing point, the stand-up, and the guard's return to their station. |
+| Multiple NPCs | Distract two eligible NPCs at once, then throw a second object while they inspect. Their initial investigation should continue. |
+| Normal priority and exceptions | Repeat with a customized patrol, a guard in combat, and an active scripted scene. The patrol yields temporarily. Combat and the scene keep control. |
+| Save upgrade | Load a v0.3.3 save. Save during the walk and during the kneel, reload, and verify the NPC resumes their usual package. Check the carry global, existing settings and tolerance counts. |
+
+The startup check resolves the Travel template Location input and the
+vanilla Hold Position package before installing the selection hook.
+The `kneel graph event accepted` message reports the engine's response
+to the event. Verify the visible pose in Skyrim.
+
+References
+
+- [Native package selection and movement research](https://github.com/marthofdoom/APMF/blob/main/native/channels/Travel.cpp)
+- [Kneeling graph entry and reset report](https://www.reddit.com/r/skyrimmods/comments/jfot2d/)
+- [SKSE save notification order](https://github.com/ianpatt/skse64/blob/master/skse64/Hooks_SaveLoad.cpp)
+
+## v0.3.3 walking witnesses and kneeling exit
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Walking witness | Crouch with the sneak eye closed and hit walking Commander Caius with a gold ingot. If he walks past the object during the flinch, look for `approaching object` in ThrowObject.log and verify he returns to it. |
+| Stationary guard | Hit a stationary Dragonsreach entrance guard below the tolerance limit. Verify that they go down on their knees and stand after the logged hold duration without leaving the cell. |
+| Competing AI | Try a modded patrol or sandbox package and throw a second object during the investigation. Verify that the NPC finishes inspecting the first one and resumes their own routine. |
+| Save and detection | Save during a kneel, then load again. Repeat with a closed-eye near miss, an open sneak eye, while standing, and with a one-handed weapon. Only eligible hidden throws should start investigations. |
+
+The installed vanilla IDLE records used by this build are
+`IdleKneelingEnter` (000E8E52) and `IdleKneelingExit` (000E8E53).
+The runtime checks require Skyrim. The host tests exercise the
+moving-witness route and bounded stagger wait.
+
+## v0.3.2 investigate beside the NPC
+
+Core tests cover the closed-eye restriction, proximity on one floor,
+minimum recovery time after a flinch, and the quiet period before kneeling.
+
+| Case | Runtime check |
+| --- | --- |
+| Direct hit | While hidden, hit a neutral guard with an ingot below their tolerance limit so it lands at their feet. Check `reaction queued a nearby check`, then `trying inspection in place` in ThrowObject.log. |
+| Near miss | While hidden, throw past the guard so they flinch and the item lands beside them. Check that they face it and kneel in place. |
+| Eye open and standing | Repeat the same throws with the sneak eye open and while standing. Verify there is no nearby investigation, even if the guard flinches. |
+| Resume | Leave the guard for the configured kneel range. Verify their own AI takes over and the item remains available for pickup. |
+
+## v0.3.1 investigation recovery and kneel settings
+
+The v0.3.0 log showed a gold ingot eliciting suspicion dialogue and
+hitting a guard without any investigation requests. Core tests now cover
+a sleeping body without a contact, rolling contact, the flight-end
+fallback, and sanitizing the kneel range.
+
+| Case | Runtime check |
+| --- | --- |
+| Gold ingot | Repeat a hidden near miss and a direct hit below the tolerance limit. Follow `Distraction` and `Investigation` entries from witness through landing, walk and kneel. |
+| Customized AI | Try a guard with a modded patrol or sandbox package. Verify temporary inspection and a return to the actor's usual routine. Throw a second object while they investigate. |
+| Settings | Confirm the 6–9 second default, set both sliders to 12 seconds, apply and restart. Verify the next kneel is about 12 seconds and the values persisted. |
+| Save | Save during walking and kneeling, then reload. Verify actors resume their packages and any temporary marker is cleaned up. |
+
+## v0.3.0 environmental stealth distractions
+
+The core test covers hidden and detected launches, excluded one-handed
+weapons, a pass on either side of the trajectory, landing range, and
+the quiet period before investigating. Skyrim runtime checks remain open.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Landing and near miss | While hidden, throw a bottle behind a guard, then try a faster pass that settles farther away. Verify the guard walks to the resting item, kneels, leaves it in place and returns to their post. |
+| Multiple witnesses | Throw an item near several guards facing different directions. They should investigate concurrently. Try a second throw while the first group is still walking or kneeling. |
+| Hostiles and direct hits | Test a non-combat bandit and a friendly NPC hit below their tolerance limit. Then test an NPC already in combat and a hit that triggers combat. Combat takes precedence. |
+| Exclusions | Test a one-handed weapon, a throw with the eye open, and a standing throw. Confirm the v0.2.3 reactions. |
+| Cleanup | Save while an actor walks or kneels, reload a v0.2.3 save, and pick up a distraction object during the approach. Confirm normal AI resumes and no temporary marker remains active. |
+
+Native walking uses Skyrim's latent Actor.PathToReference function.
+The kneeling idle requires a compatible actor animation graph. A
+blocked navmesh path or incompatible idle ends the investigation.
+
+## v0.2.3 sneak reaction dialogue
+
+The core test covers hidden and detected crouching throws, detection by
+another observer, standing before impact, and unavailable detection data.
+
+| Case | Runtime check |
+| --- | --- |
+| Eye open | Crouch in front of a non-hostile NPC. Throw an ordinary item past them and then try a direct hit after the reaction cooldown. Listen for the existing collision lines. |
+| Eye open from a bystander | Stay behind the reacting NPC while a second NPC can see you. Check that the reacting NPC uses normal collision dialogue. |
+| Eye closed | Crouch out of sight and repeat with an NPC whose voice supports suspicion lines. Compare with the eye opening before the reaction. |
+
+## v0.2.2 full-size weapons and dagger alignment
+
+The core test checks that a scaled hand bone preserves the original
+weapon size and that the dagger shaft stays perpendicular to the forearm.
+
+| Case | Runtime check |
+| --- | --- |
+| Original size | Pick up the same sword, axe, mace, and dagger in third person and compare their scale before pickup and after drop. Include a long sword and a scaled world reference. |
+| Dagger grip | Orbit vanilla and modded daggers in the Hold pose. The handle should sit inside the right palm with the blade clear of the wrist and sleeve. Walk and then drop or throw it. |
+| Baseline | Confirm non-weapon third-person carry, first-person carry, throw spin, and v0.2.1 save loading. |
+
+## v0.2.1 third-person weapon grip
+
+The core test covers standard, reversed, centered and offset mesh pivots.
+The existing clips were decoded against the Skyrim skeleton to verify the
+right-hand weapon node during the hold, pickup, throw and carry cycles.
+
+| Case | Runtime check |
+| --- | --- |
+| Weapon grip | Hold an axe, sword and dagger, including a modded weapon. Orbit the camera and check that the handle meets the palm. Check Hold, walking and sprinting. |
+| Weapon release | Drop a one-handed weapon in open space and near obstructions. Check the hand-height fall and try a throw in each camera mode. |
+| Existing carry placement | Hold and drop a helmet, gloves, boots and loose clutter. Switch between first and third person while holding a weapon. |
+
+## v0.2.0 thrown weapon spin
+
+The core test covers the angular rate, weapon length along each mesh
+axis, a sideways release, and vertical aim. Live checks use Skyrim Steam
+1.6.1170 with trajectory logging enabled for measured spin at release.
+
+| Case | Runtime check |
+| --- | --- |
+| End-over-end spin | Throw a sword, dagger, war axe, mace, and pickaxe in both camera modes. Repeat with a modded weapon. Verify the blade or head travels around the center and the log reports around 2.5 rotations per second at release. |
+| Existing releases | Drop a weapon in both views. Throw and drop a cabbage and helmet. Compare their behavior with v0.1.8. |
+| Upgrade | Load a v0.1.8 save pair and confirm existing settings and same-day tolerance counts. |
+
+## v0.1.8 third-person equipment drops
+
+Tsoxer confirmed v0.1.7 first-person drops for equipment and ordinary
+items and third-person drops for ordinary items. Third-person equipment
+still produced the hand obstruction message. The portable regression
+tests exercise nearby hand-height clearance for vertical and horizontal
+weapons, helmets, boots, and gloves.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Open floor | Drop a long one-handed weapon, a pickaxe, boots, gloves, and a helmet. In third person verify that each original reference falls near the hand without a launch impulse. Try a scaled carry visual. |
+| Obstruction | Repeat by a doorway or staircase. Clear alternatives should stay near hand height. A genuine wall or player overlap can leave the item held. The log records the chosen offset or a count of blocked positions. |
+| Baseline | Check a first-person weapon drop and both camera modes with a cabbage. Confirm throwing, suspicion dialogue and v0.1.7 save loading. |
+
+## v0.1.7 visible first-person drops
+
+The portable tests cover a normal cabbage drop, near-plane clearance
+for a long item, angled and invalid views, and a fall path through the
+player capsule.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Visible first-person drop | Pick up a cabbage with G. In first person, look forward and press E. The item should appear just below the crosshair, fall without a push, and remain available for pickup. Repeat with a pickaxe and gloves. |
+| Clearance and fallback | Drop next to a wall and look sharply up or down. Confirm that the item stays clear of the camera and the player. Check that a blocked visible origin uses the nearby floor placement when clear. |
+| Baseline and upgrade | Check the original third-person release from the hand, both throw modes, and sneak suspicion. Load a v0.1.6 save pair and verify recovery and settings. |
+
+## v0.1.6 camera-specific drops
+
+Tsoxer confirmed v0.1.5 suspicion dialogue in live Skyrim and verified
+that the nearby equipment drop worked. That placement made equipment
+appear to jump from the hand in third person. The old first-person
+clutter offset also put some drops farther away than expected.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Third-person hand drop | Drop a sword, pickaxe, boots, helmet, gloves, and a gold ingot. Compare the first visible falling frame with the item's held position. Try a long weapon on open ground and beside a wall. A true obstruction should leave the item held. |
+| First-person floor drop | Drop the same items while looking level, up, and down. Verify the original reference settles near the player. Repeat by a wall and on Dragonsreach stairs. |
+| Other behavior | Repeat the confirmed sneak suspicion case and both throw camera modes. Load a v0.1.5 save pair and verify held-item recovery, settings, and tolerance. |
+
+## v0.1.5 equipment drops and spatial suspicion audio
+
+The user confirmed the v0.1.4 pickaxe pickup and throw in Skyrim.
+Ordinary item drops were also confirmed in both views. The v0.1.5
+portable tests cover equipment release footprints and malformed voice
+containers. The parser was also checked against a real compressed
+xWMA sample wrapped in a test FUZ file.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Equipment drops | Drop a sword, dagger, pickaxe, helmet, boots, and gloves in both views. Repeat while looking up, looking down, rotating the camera, or facing a nearby wall. Confirm the equipment appears by the character on a clear surface and starts without throw velocity. Try the Dragonsreach stairs and a cluttered corner. |
+| Ordinary items | Drop a gold ingot and a bucket in both views and verify their existing placement. Compare equipment throws with v0.1.4. |
+| Positional suspicion | Repeat the reported Dragonsreach gold ingot throw while sneaking. Try a near miss and a direct hit below the tolerance threshold. Listen with the NPC on alternate sides and at different distances. Check for flinch, the NPC's own bark at their position, and continued play during and after playback. |
+| Voice lifetime | Try a second throw while the clip plays. Leave the area or load a save mid-clip. Check that playback stops. Verify regular warning dialogue on standing throws. |
+| Upgrade | Load paired v0.1.4 saves and co-saves, including a save with a held item. Verify recovery, bindings and the tolerance record. |
+
+## v0.1.4 sneak stability and exact pickaxe eligibility
+
+The supplied v0.1.3 log identified the standard Pickaxe as the rejected
+base form. The portable tests cover that exact form ID, the unaffected
+two-handed rules, and the existing resting weapon policy.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Sneak throw audio crash | Repeat the gold ingot throw near the NPCs in Dragonsreach. Try a near miss and a direct hit. Verify a flinch where applicable, no Throw Object suspicion voice, and continued play. Verify that an unaware NPC below the tolerance threshold does not enter combat from an ordinary hit. |
+| Same placed pickaxe | Aim at reference 000DF1DE if present and press G in both camera modes. Confirm Pickup selected uses base 000E3C16, then drop, pick up again, and throw. Repeat with a freshly dropped standard pickaxe. |
+| Controls | Throw a normal one-handed axe, check an excluded two-handed weapon, and compare standing reactions, Dragonsreach stairs, and native hold-E with v0.1.3. |
+| Save upgrade | Replace the mod while Skyrim is closed, then load the paired v0.1.3 ESS and SKSE co-save. Check custom bindings, tolerance history, and held-item recovery. |
+
+## v0.1.3 sneak throw crash and pickaxe pickup
+
+The supplied v0.1.2 checklist passed seven of ten cases. Dragonsreach
+stairs, clutter, bulky objects, modded one-handed weapons, MO2 metadata,
+the toggle label, and existing saves all passed. The crash near the guard
+blocked the three sneak reaction checks.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Guard crash reproduction | Sneak and throw clutter just past the Dragonsreach guard. Repeat with a direct clutter hit below the tolerance limit. Check for a flinch, the guard's own suspicion voice if available, and no forced player detection. Confirm the log shows a matching voice path when audio plays. |
+| Missing recording | Repeat near an unaware actor whose voice has no matching Skyrim recording. Check that the flinch still plays and the game continues. Repeat standing for the regular reaction. |
+| Pickaxe | Pick up, drop and throw a loose standard Pickaxe (base 000E3C16), including a newly dropped one. Pick up the same object again after it settles. If pickup still rejects a particular reference, the log now includes both reference and base IDs. Repeat with a normal axe, a two-handed weapon, and a quest-locked reference. |
+| Verified v0.1.2 paths | Repeat a throw from the stairs and with a bulky item near clutter. Load a v0.1.2 save and its SKSE co-save. Check the carry recovery, settings, and existing tolerance. |
+
+## v0.1.2 third-person release, suspicion audio, and weapon option label
+
+Tsoxer confirmed nine v0.1.1 checks, including half-swing damage in
+gameplay. Sneak suspicion dialogue still failed. Both v0.1.1 damage
+formulas carry forward.
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Stairs and clutter | In third person, throw a small object up and down the stairs to the Dragonsreach throne. Try a bucket or other bulky loose object beside furniture. Check the bounds clearance log on fallback and confirm that a fully blocked origin leaves the item held. Repeat with the same object in first person. |
+| Sneak suspicion | With reactions on, hit an unaware NPC with ordinary clutter, then test a close miss. Confirm the flinch, their own hearing or dismissive audio, and no ordinary standing warning. Check the log for the matching voice file. Repeat with two different voices, a creature without a recorded line, and a standing throw. |
+| Weapon options | Confirm the updated label. Compare each damage mode against v0.1.1 with the same weapon, target, and settings. Verify weapon hits fill tolerance with both settings. |
+| Upgrade and metadata | In MO2 verify author Tsoxer and the description in the plugin details. Load a v0.1.1 ESS/SKSE save pair and check input bindings, rolls, and recovery of a held item. Verify vanilla hold-E and dropped-item behavior in both cameras. |
+
+## v0.1.1 sneak detection, release clearance, and tolerance
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Sneak detection | With reactions enabled, throw near and hit an unaware bandit from cover. Check for a flinch, the sneak detection event in ThrowObject.log, and the NPC's own search or dismissive bark when the engine selects a line. Repeat for an alerted actor, a town guard, and a standing throw. |
+| Weapon release | Pick up ordinary and unusually long or wide mod-added one-handed weapons. Throw them in third person from open ground and in clear indoor spaces. Check for the third-person weapon clearance log when fallback was needed. Repeat beside a wall, behind a doorway, aiming into a ceiling, and in first person. The original reference should stay held if the release has no clear path. |
+| Guard tolerance | Start with a friendly guard at 0/6. Hit the guard once with a one-handed weapon. Confirm the meter reaches 6/6 and the usual threshold response occurs in both damage modes. Repeat from a fresh save while sneaking and with another eligible friendly creature. Confirm that a non-weapon hit goes to 1/6. |
+| Half swing | Compare a normal physical swing with an identical thrown weapon against comparable targets on the same difficulty. The throw should do half the physical damage, excluding enchantment damage. Sneaking should never add a damage multiplier. Test protected actors and a charged weapon separately. |
+| Upgrade | Load prior v0.1.0 and v0.0.15 ESS and SKSE co-save pairs with the same MO2 profile. Check input settings, tolerance history, and recovery from an empty or held-item save. |
+
+## v0.1.0 sneak reactions and thrown equipment
+
+| Case | Runtime check on Steam 1.6.1170 |
+| --- | --- |
+| Sneak voice | Throw near and hit an unaware vanilla bandit with reactions on. Check that the NPC flinches and, if a line is available, speaks discovery or search dialogue in their existing voice. Repeat on actors with different voice types, a creature without a line, a target that already detected the player, and a standing throw. |
+| Equipment | Carry and throw loose swords, daggers, war axes, maces, helmets, gloves and boots in both camera views. Compare leather and metal pieces. Try a greatsword, bow, staff, shield, cuirass, quest weapon and jewelry. Compare pickup/drop ownership and repeated pickup. |
+| Weapon swing damage | Compare a normal melee swing and a throw of the same one-handed weapon with identical target, difficulty, skills, and perks. Repeat with a tempered weapon, a charged base enchantment, a custom enchantment, and a spent enchantment. Inspect remaining charge and recover the same object. Measure crouched and standing throws with melee sneak perks unlocked. |
+| Damage toggle | Turn off Melee damage for thrown one-handed weapons. Verify normal physics damage and that the enchantment is not applied or drained. Repeat with global Impact damage disabled. |
+| Tolerance | Confirm that a friendly NPC remains protected by tolerance before their threshold, including from the enchantment. Verify escalation, bounty and health safeguards. |
+| Upgrade | Load the same v0.0.15 ESS and SKSE co-save pair with the new DLL. Verify custom keys, tolerance counts, and valid/stale carry recovery. Repeat with an empty hand, an object held, and a dropped weapon. |
+
 ## v0.0.15 held-item recovery
 
 Portable tests run the production recovery policy for missing, deleted,

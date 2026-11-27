@@ -1,10 +1,17 @@
 #include "core.hpp"
+#include "distraction_rules.hpp"
+#include "equipment.hpp"
+#include "release_clearance.hpp"
 #include "held_recovery.hpp"
 #include "input_filter.hpp"
 #include "tolerance.hpp"
+#include "voice_clip.hpp"
+#include "weapon_grip.hpp"
+#include "weapon_spin.hpp"
 
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
 
 using namespace to;
 
@@ -34,8 +41,277 @@ float range(float weight, float area, ItemKind kind, float tuning, float speed, 
     return groundContact({0,0,1.4f},extended ? doubleThrowRange(base) : base,drag(weight,area,kind,tuning),extended).x;
 }
 
+std::vector<std::uint8_t> voiceFixture(bool compressed)
+{
+    std::vector<std::uint8_t> data{'F','U','Z','E',1,0,0,0,1,0,0,0,0,
+                                  'R','I','F','F',0,0,0,0};
+    const auto tag = [&](std::string_view text) { data.insert(data.end(),text.begin(),text.end()); };
+    const auto size = [&](std::uint8_t length) { data.insert(data.end(),{length,0,0,0}); };
+    tag(compressed ? "XWMA" : "WAVE");
+    tag("fmt ");
+    size(compressed ? 18 : 16);
+    data.insert(data.end(),{std::uint8_t(compressed ? 0x61 : 1),std::uint8_t(compressed),
+                           1,0,0x40,0x1f,0,0,0x80,0x3e,0,0,std::uint8_t(compressed ? 4 : 2),0,16,0});
+    if (compressed) {
+        data.insert(data.end(),{0,0});
+        tag("dpds");
+        size(8);
+        data.insert(data.end(),{16,0,0,0,32,0,0,0});
+    }
+    tag("data");
+    size(compressed ? 8 : 32);
+    data.resize(data.size()+(compressed ? 8 : 32));
+    data[17] = static_cast<std::uint8_t>(data.size()-21);
+    return data;
+}
+
 int main()
 {
+    CHECK(kneelDuration({}).minimum==4.f && kneelDuration({}).maximum==7.f);
+    CHECK(migrateKneelDefaults({6.f,9.f},0).minimum==4.f && migrateKneelDefaults({6.f,9.f},0).maximum==7.f);
+    CHECK(migrateKneelDefaults({6.f,9.f},1).minimum==6.f && migrateKneelDefaults({6.f,9.f},1).maximum==9.f);
+    CHECK(migrateKneelDefaults({5.f,10.f},0).minimum==5.f && migrateKneelDefaults({5.f,10.f},0).maximum==10.f);
+    CHECK(kneelDuration({12.f,4.f}).maximum==12.f);
+    CHECK(kneelDuration({-4.f,90.f}).minimum==1.f && kneelDuration({-4.f,90.f}).maximum==60.f);
+    CHECK(!readyToInvestigate(false,.10f,0.f,false));
+    CHECK(readyToInvestigate(false,.22f,0.f,false));
+    CHECK(readyToInvestigate(false,.06f,0.f,true));
+    CHECK(!readyToInvestigate(true,0.f,.5f,false));
+    CHECK(readyToInvestigate(true,0.f,.9f,false));
+    CHECK(readyToInvestigate(true,.12f,.3f,false));
+    CHECK(besideForInspection({0,0,0},{43,-42,10}));
+    CHECK(!besideForInspection({0,0,0},{81,0,0}));
+    CHECK(!besideForInspection({0,0,0},{10,0,-93}));
+    CHECK(kneelingPose(56.f,40.f));
+    CHECK(kneelingPose(28.f,20.f));
+    CHECK(!kneelingPose(56.f,52.f));
+    CHECK(!kneelingPose(56.f,0.f));
+    CHECK(!kneelingPose(56.f,std::numeric_limits<float>::infinity()));
+    using enum InspectionRoute;
+    CHECK(inspectionRoute(.25f,.22f,true,false)==wait);
+    CHECK(inspectionRoute(.50f,.10f,true,false)==wait);
+    CHECK(inspectionRoute(.55f,.18f,true,true)==wait);
+    CHECK(inspectionRoute(.55f,.18f,true,false)==kneel);
+    // A walking witness can pass the resting object while recovering from a hit.
+    CHECK(inspectionRoute(.65f,.20f,false,false)==approach);
+    CHECK(inspectionRoute(1.25f,.20f,false,true)==approach);
+    CHECK(inspectionRoute(1.25f,.20f,true,true)==kneel);
+    const Vec passFrom{-200,0,60}, passTo{200,0,60};
+    CHECK(hearsThrow(passFrom,passTo,{0,70,20},{0,70,112},95.f));
+    CHECK(hearsThrow(passFrom,passTo,{0,-70,20},{0,-70,112},95.f));
+    CHECK(!hearsThrow(passFrom,passTo,{0,100,20},{0,100,112},95.f));
+    CHECK(hearsThrow({0,0,0},{0,0,0},{0,30,20},{0,30,112},95.f));
+    CHECK(!hearsThrow({0,0,0},{0,0,0},{0,30,130},{0,30,220},95.f));
+    const std::array<std::uint32_t,1> impactVictims{2};
+    CHECK(eligibleThrowWitness(true,impactVictims,1));
+    CHECK(!eligibleThrowWitness(true,impactVictims,2));
+    CHECK(eligibleThrowWitness(false,impactVictims,2));
+    // The guard in the live report heard the pass. The final rolling
+    // position was outside hearing range and must not erase that witness.
+    CHECK(hearsThrow(passFrom,passTo,{0,70,20},{0,70,112},95.f));
+    CHECK(!hearsThrow({200,0,0},{200,0,0},{0,70,20},{0,70,112},95.f));
+    CHECK(useSuspicionVoice(true,true,true,-25));
+    CHECK(useSuspicionVoice(true,true,true,0));
+    CHECK(!useSuspicionVoice(true,true,true,12));  // Another observer detected the player.
+    CHECK(!useSuspicionVoice(true,true,false,-25));
+    CHECK(!useSuspicionVoice(true,false,true,-25));
+    CHECK(!useSuspicionVoice(false,true,true,-25));
+    CHECK(!useSuspicionVoice(true,true,true,std::nullopt));
+    for (const bool compressed : {false,true}) {
+        auto fixture = voiceFixture(compressed);
+        const auto clip = readVoiceClip(fixture);
+        CHECK(clip && clip->durationMs==2 && clip->packetTable.size()==(compressed ? 8u : 0u));
+        CHECK(!readVoiceClip(std::span(fixture).first(fixture.size()-1)));
+        if (compressed) {
+            fixture[clip->packetTable.data()-fixture.data()+4] = 8;
+            CHECK(!readVoiceClip(fixture));
+        }
+        fixture[8] = 255;
+        CHECK(!readVoiceClip(fixture));
+    }
+    for (std::uint32_t type=0; type<=10; ++type)
+        CHECK(oneHandedWeapon(type)==(type>=1 && type<=4));
+    CHECK(oneHandedWeapon(0,0x000E3C16));
+    CHECK(oneHandedWeapon(6,0x000E3C16));
+    CHECK(!oneHandedWeapon(6,0x010E3C16));
+    CHECK(!oneHandedWeapon(8,0x000E3C17));
+    CHECK(weaponEquipment(8)==Equipment::staff);
+    CHECK(weaponEquipment(9)==Equipment::crossbow && !oneHandedWeapon(9));
+    CHECK(weaponEquipment(1)==Equipment::oneHanded);
+    CHECK(weaponEquipment(5)==Equipment::none && weaponEquipment(6)==Equipment::none &&
+          weaponEquipment(7)==Equipment::none);
+    CHECK(equipmentFlight(Equipment::crossbow,false).drag>equipmentFlight(Equipment::oneHanded,false).drag);
+    CHECK(equipmentFlight(Equipment::backpack,true).drag>equipmentFlight(Equipment::backpack,false).drag);
+    CHECK(weaponLengthAxis({70,4,9}).x==1.f);
+    CHECK(weaponLengthAxis({9,70,4}).y==1.f);
+    CHECK(weaponLengthAxis({4,9,70}).z==1.f);
+    CHECK(weaponLengthAxis({}).length()==0.f);
+    const auto standardGrip = weaponGrip({0,20,0},{2,30,1});
+    CHECK(standardGrip && standardGrip->handle.length()==0.f);
+    CHECK(standardGrip->rows[0].x==1.f && standardGrip->rows[1].y==1.f && standardGrip->rows[2].z==1.f);
+    const auto reversedGrip = weaponGrip({-20,0,0},{30,2,3});
+    CHECK(reversedGrip && reversedGrip->handle.length()==0.f && reversedGrip->rows[1].x==-1.f);
+    const auto offsetGrip = weaponGrip({8,0,20},{2,3,20});
+    CHECK(offsetGrip && offsetGrip->handle.x==8.f && std::abs(offsetGrip->handle.z-7.2f)<.001f);
+    CHECK(offsetGrip->rows[0].x==1.f && offsetGrip->rows[1].z==1.f && offsetGrip->rows[2].y==-1.f);
+    const auto centeredGrip = weaponGrip({},{2,30,3});
+    CHECK(centeredGrip && std::abs(centeredGrip->handle.y+19.2f)<.001f);
+    CHECK(!weaponGrip({},{}));
+    const std::array<GripTriangle,2> offsetShaft{{
+        {{{6,0,-2},{10,0,2},{10,100,2}}},
+        {{{6,0,-2},{10,100,2},{6,100,-2}}}
+    }};
+    // The record describes a Y-axis weapon. This replacer runs along -X,
+    // with a short offset handle around its authored pivot and a long blade.
+    const std::array<GripTriangle,4> rotatedMelee{{
+        {{{6,6,-1},{6,10,1},{-6,10,1}}},
+        {{{6,6,-1},{-6,10,1},{-6,6,-1}}},
+        {{{-6,10,1},{-6,16,-1},{-84,13,0}}},
+        {{{-6,6,-1},{-6,10,1},{-84,13,0}}}
+    }};
+    const auto fittedMelee = fittedWeaponGrip({0,40,0},{2,45,2},GripProfile::fittedMelee,rotatedMelee);
+    CHECK(fittedMelee && fittedMelee->rows[1].x==-1.f);
+    CHECK(std::abs(fittedMelee->handle.x)<.001f && std::abs(fittedMelee->handle.y-8.f)<.001f);
+    const auto fittedHaft = fittedWeaponGrip({8,50,0},{2,50,2},GripProfile::fittedMelee,offsetShaft);
+    CHECK(fittedHaft && std::abs(fittedHaft->handle.x-8.f)<.001f && std::abs(fittedHaft->handle.y-18.f)<.001f);
+    const auto noCpuGeometry = fittedWeaponGrip({0,20,0},{2,30,1},GripProfile::fittedMelee,{});
+    CHECK(noCpuGeometry && noCpuGeometry->handle.length()==0.f);
+    const auto fittedSpear = fittedWeaponGrip({8,50,0},{2,50,2},GripProfile::spear,offsetShaft);
+    CHECK(fittedSpear && std::abs(fittedSpear->handle.x-8.f)<.001f && std::abs(fittedSpear->handle.y-45.f)<.001f);
+    const auto fallbackStaff = fittedWeaponGrip({0,50,0},{2,50,2},GripProfile::staff,{});
+    CHECK(fallbackStaff && std::abs(fallbackStaff->handle.y-45.f)<.001f);
+    const auto untouched = fittedWeaponGrip({0,20,0},{2,30,1},GripProfile::standard,offsetShaft);
+    CHECK(untouched && untouched->handle.length()==0.f);
+    CHECK(std::abs(weaponVisualLocalScale(1.6f,1.35f)*1.35f-1.6f)<.001f);
+    CHECK(weaponVisualLocalScale(1.25f,0.f)==1.25f);
+    for (const auto elbowToWrist : {Vec{-.319f,.098f,.943f},Vec{0,0,1},Vec{1,0,0},Vec{}}) {
+        const auto [x,y,z] = daggerGripRotation(elbowToWrist);
+        const Vec blade{x.y,y.y,z.y};  // The weapon frame's +Y column.
+        const Vec face{x.z,y.z,z.z};
+        CHECK(std::abs(blade.dot(elbowToWrist))<.001f);
+        CHECK(std::abs(blade.length()-1.f)<.001f && std::abs(face.length()-1.f)<.001f);
+        CHECK(std::abs(blade.dot(face))<.001f);
+    }
+    const auto pitchSpin = weaponAngularVelocity({0,12,4},{0,0,1});
+    CHECK(std::abs(pitchSpin.x+5.f*std::numbers::pi_v<float>)<.001f);
+    CHECK(pitchSpin.y==0.f && pitchSpin.z==0.f);
+    for (const auto velocity : {Vec{7,11,2},Vec{0,13,0},Vec{0,0,12},Vec{0,0,-12}}) {
+        for (const auto length : {Vec{1,0,0},Vec{0,1,0},Vec{0,0,1},Vec{2,1,2},Vec{}}) {
+            const auto spin = weaponAngularVelocity(velocity,length);
+            CHECK(std::abs(spin.length()-weaponSpinRate)<.001f);
+            CHECK(std::abs(spin.dot(length))<.001f);
+        }
+    }
+    constexpr bool pickaxeIsOneHanded = oneHandedWeapon(3);
+    CHECK(canRestoreRestingPickup(RestingPickupLayer::weapon,false,true,pickaxeIsOneHanded));
+    CHECK(canRestoreRestingPickup(RestingPickupLayer::weapon,true,false,pickaxeIsOneHanded));
+    CHECK(canRestoreRestingPickup(RestingPickupLayer::clutter,false,false,pickaxeIsOneHanded));
+    CHECK(!canRestoreRestingPickup(RestingPickupLayer::other,true,true,pickaxeIsOneHanded));
+    CHECK(!canRestoreRestingPickup(RestingPickupLayer::weapon,true,true,oneHandedWeapon(6)));
+    CHECK(canRestoreRestingPickup(RestingPickupLayer::clutter,true,true,false));
+    CHECK(!canRestoreRestingPickup(RestingPickupLayer::clutter,false,true,false));
+    CHECK(!canRestoreRestingPickup(RestingPickupLayer::clutter,true,false,false));
+    constexpr std::uint32_t head=1u<<0, hair=1u<<1, body=1u<<2, hands=1u<<3, forearms=1u<<4,
+        ring=1u<<6, feet=1u<<7, calves=1u<<8, shield=1u<<9, circlet=1u<<12;
+    CHECK(armorEquipment(head|hair|circlet)==Equipment::headwear);
+    CHECK(armorEquipment(hands|forearms)==Equipment::gloves);
+    CHECK(armorEquipment(feet|calves)==Equipment::boots);
+    CHECK(armorEquipment(shield|hands)==Equipment::none);
+    CHECK(armorEquipment(body|head|hands|feet)==Equipment::none);
+    CHECK(armorEquipment(head|feet)==Equipment::none);
+    CHECK(armorEquipment(ring|circlet)==Equipment::none);
+    constexpr std::uint32_t back = 1u<<17, alternatePackSlot = 1u<<26;
+    CHECK(armorEquipment(back)==Equipment::none);
+    CHECK(backpackSlots(back) && backpackSlots(alternatePackSlot));
+    CHECK(!backpackSlots(0) && !backpackSlots(body|back) && !backpackSlots(shield|back));
+    CHECK(backpackLabel("Adventurer's BACKPACK") && backpackLabel("Leather_BackPack_GND.nif"));
+    CHECK(backpackLabel("RuckSack") && !backpackLabel("Hooded Cloak") && !backpackLabel("Field Lantern"));
+    CHECK(backpackKeyword("BagTypeBackpack") && backpackKeyword("CampfireBackpack") &&
+          !backpackKeyword("CanAttachToBackpack"));
+    CHECK(equipmentFlight(Equipment::none,true).speed==1.f);
+    CHECK(equipmentFlight(Equipment::none,false).drag==1.f);
+    CHECK(equipmentFlight(Equipment::gloves,true).drag>equipmentFlight(Equipment::gloves,false).drag);
+    CHECK(equipmentFlight(Equipment::oneHanded,false).speed>equipmentFlight(Equipment::boots,false).speed);
+    CHECK(equipmentFlight(Equipment::staff,false).speed<equipmentFlight(Equipment::oneHanded,false).speed);
+    CHECK(resistedSwingDamage(40.f,40.f,10.f,0.f)==30.f);
+    CHECK(resistedSwingDamage(40.f,80.f,20.f,0.f)==30.f);
+    CHECK(resistedSwingDamage(40.f,40.f,60.f,0.f)==0.f);
+    CHECK(resistedSwingDamage(40.f,0.f,0.f,0.f)==40.f);
+    CHECK(resistedSwingDamage(40.f,40.f,10.f,0.f)*thrownSwingDamageScale==15.f);
+    constexpr ReleaseBounds longBlade{{1.f,48.f,2.f},{Vec{1,0,0},Vec{0,1,0},Vec{0,0,1}}};
+    constexpr Vec feetAxis{0,0,14}, headAxis{0,0,57};
+    const ReleaseBounds arrowBundle{{2,36,2},longBlade.axes};
+    const Vec arrowHand{23,0,40};
+    CHECK((arrowHand-Vec{0,0,56}).length()<arrowBundle.half.length()+9.f);
+    CHECK(sweptBoundsClearCapsule(arrowBundle,arrowHand,{0,0,-55},feetAxis,headAxis,16.f));
+    CHECK(longBlade.valid());
+    CHECK(sweptBoundsClearCapsule(longBlade,{19,20,35},{15,10,0},feetAxis,headAxis,14));
+    CHECK(!sweptBoundsClearCapsule(longBlade,{10,20,35},{15,10,0},feetAxis,headAxis,14));
+    CHECK(!sweptBoundsClearCapsule(longBlade,{19,20,35},{-30,0,0},feetAxis,headAxis,14));
+    const auto drops = groundDropFootprints(longBlade,{10,20,0},{0,1,0},14);
+    CHECK(drops[0].x==10.f && drops[0].y==90.f);
+    CHECK(drops[3].x==33.f && drops[3].y==20.f);
+    CHECK(drops[8].y==drops[0].y+14.f);
+    CHECK(sweptBoundsClearCapsule(longBlade,drops[3]+Vec{0,0,7},{0,0,-2},
+                                  feetAxis+Vec{10,20,0},headAxis+Vec{10,20,0},16));
+    constexpr ReleaseBounds cabbage{{8,8,8},longBlade.axes};
+    constexpr Vec eye{0,0,105}, facing{0,1,0};
+    const auto visibleDrop = viewDropPoint(cabbage,eye,facing,15.f,0.f);
+    CHECK(visibleDrop && visibleDrop->z<eye.z && visibleDrop->y==36.f);
+    CHECK(sweptBoundsClearCapsule(cabbage,*visibleDrop,{0,0,-115},feetAxis,headAxis,16));
+    CHECK(!sweptBoundsClearCapsule(cabbage,{0,0,110},{0,0,-115},feetAxis,headAxis,16));
+    const auto bladeDrop = viewDropPoint(longBlade,eye,facing,15.f,0.f);
+    CHECK(bladeDrop && bladeDrop->y-longBlade.extent(facing)==21.f);
+    CHECK(!viewDropPoint(longBlade,eye,facing,15.f,18.f));
+    CHECK(!viewDropPoint(cabbage,eye,{0,0,-1},15.f,0.f));
+    CHECK(!viewDropPoint(cabbage,eye,{},15.f,0.f));
+    const auto lookingDown = Vec{0,4,-3}.unit();
+    const auto downhillDrop = viewDropPoint(cabbage,eye,lookingDown,15.f,0.f);
+    CHECK(downhillDrop && std::abs((*downhillDrop-eye).dot(lookingDown)-36.f)<.001f &&
+          downhillDrop->z<(eye+lookingDown*36.f).z);
+    // A vertical sword beside the hand fits even though a sphere wide enough
+    // to contain its length would overlap the player.
+    constexpr ReleaseBounds uprightBlade{{1.f,2.f,48.f},longBlade.axes};
+    CHECK(sweptBoundsClearCapsule(uprightBlade,{19,21,61},{},feetAxis,headAxis,16));
+    CHECK(!sweptBoundsClearCapsule(uprightBlade,{8,14,61},{},feetAxis,headAxis,16));
+    const auto equippedDrop = [&](const ReleaseBounds& shape, Vec held) {
+        const auto outward = Vec{held.x,held.y,0.f}.unit();
+        const auto points = equipmentHandDropPoints(shape,held,feetAxis,outward,16.f);
+        CHECK((points.front()-held).length()==0.f);
+        return std::any_of(points.begin(),points.end(),[&](Vec center) {
+            return (center-held).length()<=32.f && center.z>=held.z && center.z<=held.z+10.f &&
+                sweptBoundsClearCapsule(shape,center,{0,0,-80},feetAxis,headAxis,16);
+        });
+    };
+    CHECK(equippedDrop(uprightBlade,{19,0,55}));   // A sword already clear of the shoulder.
+    CHECK(equippedDrop(longBlade,{0,45,55}));      // A horizontal weapon held toward the front.
+    CHECK(equippedDrop(longBlade,{0,21,55}));      // Clear the blade's narrow side near the body.
+    CHECK(equippedDrop({{17,11,13},longBlade.axes},{21,0,55}));  // Helmet.
+    CHECK(equippedDrop({{12,18,6},longBlade.axes},{21,0,55}));   // Boots.
+    CHECK(equippedDrop({{11,8,4},longBlade.axes},{21,0,55}));    // Gloves.
+    CHECK(!equippedDrop({{75,75,75},longBlade.axes},{21,0,55}));
+    CHECK(!ReleaseBounds{}.valid());
+    constexpr ReleaseBounds crate{{17.f,18.f,20.f},longBlade.axes};
+    constexpr Vec heldCenter{25,22,42};
+    const auto releases = thirdPersonReleaseCandidates(crate,heldCenter,{0,0,36},{0,1,0},{1,0,0},feetAxis,headAxis,14);
+    CHECK((releases[0]-heldCenter).length()==0.f);
+    CHECK(releases[1].x==heldCenter.x && releases[1].y==heldCenter.y && releases[1].z>heldCenter.z);
+    CHECK(releases[3].x>heldCenter.x && releases[3].z>heldCenter.z);
+    CHECK(sweptBoundsClearCapsule(crate,releases[3],{0,10,-3},feetAxis,headAxis,14));
+    CHECK(!sweptBoundsClearCapsule(crate,releases[3],{-30,0,0},feetAxis,headAxis,14));
+
+    DailyTolerance guard;
+    constexpr std::uint32_t guardID = 0x22;
+    const auto six = [] { return 6; };
+    const auto guardStart = guard.observe(1,guardID,six);
+    CHECK(guardStart.hits==0 && guardStart.limit==6);
+    const auto guardHit = guard.hit(1,guardID,six,ToleranceHit::exhaust);
+    CHECK(guardHit.hits==6 && guardHit.limit==6 && guardHit.escalates());
+    const auto guardSave = unpackTolerance(packTolerance(guardHit));
+    CHECK(guardSave && guardSave->hits==6 && guardSave->limit==6);
+    CHECK(guard.hit(2,guardID,six).hits==1);
+    CHECK(guard.hit(2,guardID,six,ToleranceHit::exhaust).hits==6);
+
     constexpr Recovery saved{0xFF001234u,0x00027F15u};
     auto recovery = saved;
     int enableAttempts = 0;

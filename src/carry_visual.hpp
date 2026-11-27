@@ -2,7 +2,7 @@
 
 namespace to
 {
-enum class VisualNodeKind { branch, staticMesh, unsupported };
+enum class VisualNodeKind { branch, staticMesh, skinnedMesh, unsupported };
 enum class VisualResult { ready, hidden, unavailable, unsupported, cloneFailed };
 
 struct VisualNodeState {
@@ -11,10 +11,11 @@ struct VisualNodeState {
     bool hasCollision;
     bool hasAnimation;
     bool hasRenderer;
+    bool canFreezeTransform{};
 };
 
-// Walk source branches without cloning them. Only a verified static render leaf
-// reaches the clone callback. A failed walk leaves the staged tree unpublished.
+// Walk source branches without cloning them. Only a verified render leaf
+// reaches the clone callback. The caller freezes any approved local animation.
 template<class Node, class Transform, class Inspect, class Children, class Local, class Clone>
 VisualResult copyCarryGeometry(Node* source, const Transform& transform, bool root,
                                const Inspect& inspect, const Children& children,
@@ -34,7 +35,8 @@ VisualResult copyCarryGeometry(Node* source, const Transform& transform, bool ro
         }
         return result;
     }
-    if (state.kind!=VisualNodeKind::staticMesh || state.hasCollision || state.hasAnimation)
+    if (state.kind==VisualNodeKind::unsupported || state.hasCollision ||
+        (state.hasAnimation && !state.canFreezeTransform))
         return VisualResult::unsupported;
     if (!state.hasRenderer) return VisualResult::unavailable;
     return clone(*source,pose) ? VisualResult::ready : VisualResult::cloneFailed;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(ThrowObject VERSION 0.0.15 LANGUAGES CXX)
+project(ThrowObject VERSION 0.3.9.3 LANGUAGES CXX)
 
 include(CTest)
 if(BUILD_TESTING)
@@ -51,7 +51,7 @@ set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(commonlib)
 include(cmake/CommonLibClang.cmake)
 
-add_library(ThrowObject SHARED src/plugin.cpp src/carry_visual.cpp src/config.cpp src/menu.cpp src/physics.cpp src/tolerance.cpp)
+add_library(ThrowObject SHARED src/plugin.cpp src/carry_visual.cpp src/config.cpp src/distraction.cpp src/equipment.cpp src/menu.cpp src/physics.cpp src/suspicion.cpp src/tolerance.cpp)
 target_compile_features(ThrowObject PRIVATE cxx_std_23)
 target_link_libraries(ThrowObject PRIVATE CommonLibSSE::CommonLibSSE)
 target_include_directories(ThrowObject PRIVATE "${menu_SOURCE_DIR}/resources")

@@ -22,6 +22,12 @@ DailyTolerance tolerance;
 std::mutex toleranceLock;
 using MeterClock = std::chrono::steady_clock;
 MeterClock::time_point nextMeterSample;
+struct RecentExhaustion {
+    RE::FormID actor{};
+    std::uint32_t day{};
+    MeterClock::time_point visibleUntil;
+};
+RecentExhaustion recentExhaustion;
 std::atomic_bool meterVisible{};
 std::mutex meterLock;
 ToleranceMeterDisplay meterDisplay;
@@ -87,15 +93,18 @@ ToleranceCount withTolerance(Update update)
 }
 }
 
-ToleranceReaction recordToleratedHit(RE::PlayerCharacter& player, RE::Actor& npc, const Settings& settings)
+ToleranceReaction recordToleratedHit(RE::PlayerCharacter& player, RE::Actor& npc, const Settings& settings,
+                                     ToleranceHit hit)
 {
     const auto day = eligibleDay(player,npc);
     const auto id = npc.GetFormID();
     if (!day) return ToleranceReaction::ordinary;
 
     const auto count = withTolerance([&](DailyTolerance& data) {
-        return data.hit(*day,id,[&] { return rollTolerance(settings); });
+        return data.hit(*day,id,[&] { return rollTolerance(settings); },hit);
     });
+    if (hit==ToleranceHit::exhaust)
+        recentExhaustion = {id,*day,MeterClock::now()+std::chrono::seconds{2}};
     nextMeterSample = {};
     if (settings.log || count.escalates())
         SKSE::log::info("NPC tolerance {:08X}: {}/{} confirmed throws, {}",
@@ -116,7 +125,11 @@ void updateToleranceMeter(RE::PlayerCharacter& player, const Settings& settings,
 
     const auto actor = toleranceAimTarget(player,nearbyDistance);
     if (!actor || actor.get()==&player || actor->IsDead() || actor->IsGhost()) return hideMeter();
-    const auto day = eligibleDay(player,*actor);
+    auto day = eligibleDay(player,*actor);
+    // Let the HUD show the completed bar briefly if the very same hit
+    // turned its current target hostile before the next meter sample.
+    if (!day && actor->GetFormID()==recentExhaustion.actor && now<recentExhaustion.visibleUntil &&
+        nearbyActor(player,*actor) && currentDay()==recentExhaustion.day) day = recentExhaustion.day;
     if (!day) return hideMeter();
     const auto* name = actor->GetDisplayFullName();
     if (!name || !*name) name = actor->GetName();
@@ -186,6 +199,7 @@ void resetTolerance()
 {
     const std::scoped_lock guard(toleranceLock);
     tolerance = {};
+    recentExhaustion = {};
     hideMeter();
 }
 }

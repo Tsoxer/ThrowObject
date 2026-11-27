@@ -26,9 +26,9 @@ def add_mod(archive, prefix, exclude=()):
 
 def package(output, pdb):
     output.mkdir(parents=True, exist_ok=True)
-    mo2 = output / "Throw Object v0.0.15.zip"
-    sources = output / "Throw Object v0.0.15 Source.zip"
-    symbols = output / "Throw Object v0.0.15 Symbols.zip"
+    mo2 = output / "Throw Object v0.3.9 RC3.zip"
+    sources = output / "Throw Object v0.3.9 RC3 Source.zip"
+    symbols = output / "Throw Object v0.3.9 RC3 Symbols.zip"
     dll = ROOT / "mod/SKSE/Plugins/ThrowObject.dll"
     expected = tuple(sorted((ROOT / "exported").glob("ThrowObject_*.hkx")))
     if len(expected) != 6 or not dll.is_file() or not pdb.is_file():
@@ -38,7 +38,7 @@ def package(output, pdb):
         add_tree(archive, ROOT / "LICENSES", Path("LICENSES"))
         for name in DOCS:
             archive.write(ROOT / name, name)
-    prefix = Path("ThrowObject-v0.0.15")
+    prefix = Path("ThrowObject-v0.3.9-rc3")
     with ZipFile(sources, "w", ZIP_DEFLATED, compresslevel=6) as archive:
         excluded = {".dll", ".pdb", ".blend1", ".hkx"}
         for directory in (".github", "animation", "cmake", "LICENSES", "src", "tests", "tools"):

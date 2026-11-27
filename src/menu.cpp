@@ -143,7 +143,7 @@ void __stdcall render()
 {
     static Settings draft = getSettings();
     static const char* saved = "";
-    ImGuiMCP::Text("Throw Object 0.0.15");
+    ImGuiMCP::Text("Throw Object 0.3.9 RC3");
     showBindings();
     ImGuiMCP::SeparatorText("Throwing");
     ImGuiMCP::SliderFloat("Base throw speed (m/s)",&draft.metresPerSecond,4.0f,22.0f);
@@ -164,6 +164,7 @@ void __stdcall render()
     }
     ImGuiMCP::SeparatorText("Damage and crime");
     ImGuiMCP::Checkbox("Impact damage",&draft.damageEnabled);
+    ImGuiMCP::Checkbox("Melee damage for thrown one-handed weapons (50% of normal swing)",&draft.weaponMeleeDamage);
     ImGuiMCP::SliderFloat("Damage multiplier",&draft.damageScale,0.0f,4.0f);
     ImGuiMCP::SliderFloat("Damage cap",&draft.maxDamage,0.0f,100.0f);
     ImGuiMCP::Checkbox("Custom assault bounty",&draft.crime);
@@ -196,6 +197,11 @@ void __stdcall render()
     ImGuiMCP::Checkbox("Verbal reactions",&draft.reactions);
     ImGuiMCP::SliderFloat("Reaction distance",&draft.reactDistance,20.0f,230.0f);
     ImGuiMCP::SliderFloat("Reaction cooldown (s)",&draft.reactCooldown,2.0f,60.0f);
+    if (ImGuiMCP::SliderFloat("Minimum investigation kneel (s)",&draft.investigationKneel.minimum,1.f,60.f,"%.1f") &&
+        draft.investigationKneel.maximum<draft.investigationKneel.minimum)
+        draft.investigationKneel.maximum = draft.investigationKneel.minimum;
+    ImGuiMCP::SliderFloat("Maximum investigation kneel (s)",&draft.investigationKneel.maximum,
+                         draft.investigationKneel.minimum,60.f,"%.1f");
     ImGuiMCP::SeparatorText("General");
     ImGuiMCP::Checkbox("Enabled",&draft.enabled);
     ImGuiMCP::Checkbox("Debug logging",&draft.log);

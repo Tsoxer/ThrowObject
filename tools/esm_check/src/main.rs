@@ -8,6 +8,6 @@ fn main() {
     assert!(p.is_valid_as_light_plugin().unwrap());
     assert_eq!(p.masters().unwrap(), vec!["Skyrim.esm"]);
     assert_eq!(p.header_version(), Some(1.71));
-    assert_eq!(p.record_and_group_count(), Some(2));
+    assert_eq!(p.record_and_group_count(), Some(36));
     println!("esplugin parsed the full file and accepted its ESM and ESL flags, FormID range, master list, and record and group count.");
 }

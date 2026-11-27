@@ -1,8 +1,11 @@
 #include "physics.hpp"
+#include "distraction.hpp"
 #include "input_filter.hpp"
 #include "gameplay_input.hpp"
+#include "equipment_game.hpp"
 #include "held_recovery.hpp"
 #include "carry_visual_game.hpp"
+#include "weapon_grip.hpp"
 
 #include <atomic>
 #include <filesystem>
@@ -36,14 +39,17 @@ struct Held {
     RE::NiPointer<RE::NiNode> socket;
     RE::NiPointer<RE::NiNode> parent;
     RE::NiPoint3 origin{}, boundsCenter{}, boundsHalf{};
-    float radius{}, area{}, scale{1.f}, gripPitch{}, gripYaw{};
-    bool parked{}, suspended{};
+    std::optional<WeaponGrip> weaponGrip;
+    GripProfile gripProfile{GripProfile::standard};
+    float radius{}, area{}, scale{1.f}, gripPitch{}, gripYaw{}, weaponWorldScale{1.f};
+    bool parked{}, suspended{}, sneakingThrow{}, dagger{};
 };
 struct PendingPhysics {
     RE::ObjectRefHandle handle;
     RE::FormID cell{}, world{};
     Vec velocity;
     float area{}, elapsed{};
+    bool sneakingThrow{}, hiddenAtRelease{};
 };
 
 Held item;
@@ -168,13 +174,13 @@ const char* pickupBlock(RE::PlayerCharacter& player, RE::TESObjectREFR* ref, con
     if (!sameCarryArea(id(ref->GetParentCell()),id(ref->GetWorldspace()),
                        id(player.GetParentCell()),id(player.GetWorldspace()))) return "reference outside the player's area";
     auto* base = ref->GetBaseObject();
-    if (!base || !base->IsInventoryObject() || base->Is(RE::FormType::Weapon,RE::FormType::Armor))
+    if (!base || !throwableBase(*base))
         return "base form is not an eligible inventory object";
     if (ref->HasQuestObject()) return "engine marks reference as quest-bound";
     auto* root = ref->Get3D();
     const bool loose = ref->IsDynamicForm();
     auto* body = uniqueBody(root);
-    if (!body || !canHandleBody(*body,loose)) return "no supported single Havok body";
+    if (!body || !canHandleBody(*body,loose,base)) return "no supported single Havok body";
     // Placed inventory drops retain a runtime reference, including after
     // a release or reload. Their loaded clutter body is the movement check.
     if (!loose && !ref->CanBeMoved())
@@ -200,6 +206,50 @@ RE::NiNode* anchor(RE::PlayerCharacter& player)
     auto* camera = RE::PlayerCamera::GetSingleton();
     return first && camera ? camera->cameraRoot.get() : nullptr;
 }
+
+float hoverScale(const Settings& settings)
+{
+    return item.scale * std::min(settings.handSize,36.0f/std::max(item.radius,36.0f));
+}
+
+void placeWeaponVisual(RE::NiNode& hand, const Settings& settings, const WeaponGrip& grip,
+                       const std::optional<RE::NiPoint3>& palmOpening, float yaw)
+{
+    RE::NiTransform pose;
+    if (const auto* weapon = hand.GetObjectByName("Weapon"); weapon && weapon->parent==&hand) {
+        pose = weapon->local;
+    } else {
+        // Match the palm socket in the shipped third-person hold pose.
+        pose.translate = {0.f,-3.1f,7.2f};
+        pose.rotate = RE::NiMatrix3(RE::NiPoint3{0,1,0},{0,0,1},{1,0,0});
+    }
+    if (item.gripProfile==GripProfile::staff || item.gripProfile==GripProfile::spear) {
+        const RE::NiPoint3 direction{.23f*std::cos(yaw)+.12f*std::sin(yaw),
+                                     -.23f*std::sin(yaw)+.12f*std::cos(yaw),1.f};
+        const auto [x,y,z] = shaftGripRotation(vec(hand.world.rotate.Transpose()*direction));
+        pose.rotate = RE::NiMatrix3(point(x),point(y),point(z));
+    } else if (item.dagger) {
+        Vec forearm;
+        if (const auto* elbow = hand.parent)
+            forearm = vec(hand.world.rotate.Transpose()*(hand.world.translate-elbow->world.translate));
+        const auto [x,y,z] = daggerGripRotation(forearm);
+        pose.rotate = RE::NiMatrix3(point(x),point(y),point(z));
+    }
+    if (palmOpening) pose.translate = *palmOpening;
+    const auto& [right,shaft,up] = grip.rows;
+    constexpr float radians = std::numbers::pi_v<float>/180.f;
+    RE::NiMatrix3 angle;
+    angle.EulerAnglesToAxesZXY(settings.angles[0]*radians,settings.angles[1]*radians,settings.angles[2]*radians);
+    pose.rotate = angle*pose.rotate*RE::NiMatrix3(point(right),point(shaft),point(up));
+    pose.scale = weaponVisualLocalScale(item.weaponWorldScale,hand.world.scale);
+    const Settings defaults;
+    pose.translate += RE::NiPoint3{settings.xyz[0]-defaults.xyz[0],settings.xyz[1]-defaults.xyz[1],
+                                   settings.xyz[2]-defaults.xyz[2]};
+    pose.translate -= pose.rotate*point(grip.handle*pose.scale);
+    // The original socket still supplies launch position and orientation.
+    item.mesh->local = item.socket->local.Invert()*pose;
+}
+
 bool attach(RE::PlayerCharacter& player, const Settings& settings)
 {
     auto* node = anchor(player);
@@ -225,13 +275,15 @@ bool attach(RE::PlayerCharacter& player, const Settings& settings)
                                                   settings.angles[1]*radians,
                                                   settings.angles[2]*radians+item.gripYaw);
     item.socket->local.scale = 1.f;
-    item.mesh->local.scale = item.scale * std::min(settings.handSize,36.0f/std::max(item.radius,36.0f));
+    item.mesh->local = RE::NiTransform{};
+    item.mesh->local.scale = hoverScale(settings);
     const RE::NiPoint3 up{0.f,0.f,1.f};
     const auto worldToHand = node->world.rotate.Transpose();
     const auto localUp = worldToHand*up;
     float fingerClearance = 0.f;
     std::array<Vec,7> handPoints{};
     std::size_t handPointCount = 0;
+    std::optional<RE::NiPoint3> palmOpening;
     const bool inFirstPerson = firstPerson();
     if (!onCamera) {
         if (auto* knuckle = node->GetObjectByName("NPC R Finger20 [RF20]")) {
@@ -246,8 +298,11 @@ bool attach(RE::PlayerCharacter& player, const Settings& settings)
                 if (auto* tip = node->GetObjectByName(tips[i]))
                     fingers[i] = vec(tip->world.translate-node->world.translate)*inverseScale;
             }
-            if (!inFirstPerson && fingers[0] && fingers[1] && fingers[2])
+            if (!inFirstPerson && fingers[0] && fingers[1] && fingers[2]) {
                 palm = gripOpening(knuckleRelative,*fingers[0],*fingers[1],*fingers[2]);
+                if (item.dagger || item.gripProfile!=GripProfile::standard)
+                    palmOpening = worldToHand*point(palm);
+            }
             const Settings defaults;
             item.socket->local.translate = worldToHand*point(palm)+RE::NiPoint3{settings.xyz[0]-defaults.xyz[0],
                 settings.xyz[1]-defaults.xyz[1],settings.xyz[2]-defaults.xyz[2]};
@@ -279,6 +334,8 @@ bool attach(RE::PlayerCharacter& player, const Settings& settings)
         item.socket->local.translate += worldToHand*point(shift);
     }
     item.socket->local.translate -= item.socket->local.rotate*(item.boundsCenter*item.mesh->local.scale);
+    if (!inFirstPerson && item.weaponGrip)
+        placeWeaponVisual(*node,settings,*item.weaponGrip,palmOpening,player.GetAngleZ());
     if (item.socket->parent!=node) {
         if (item.parent && item.socket->parent==item.parent.get()) item.parent->DetachChild(item.socket.get());
         item.parent.reset();
@@ -311,7 +368,8 @@ bool beginPickup(RE::PlayerCharacter& player, const Settings& settings)
         }
     }
     if (reason) {
-        SKSE::log::info("Pickup rejected, crosshair {:08X}: {}",id(target.get()),reason);
+        SKSE::log::info("Pickup rejected, crosshair {:08X} (base {:08X}): {}",
+                        id(target.get()),id(target ? target->GetBaseObject() : nullptr),reason);
         return false;
     }
     item.target = target;
@@ -348,7 +406,8 @@ void grab(RE::PlayerCharacter& player, const Settings& settings)
 
     SKSE::log::info("Building render-only carry visual for {:08X} (base {:08X}, root '{}')",
                     item.id,item.base,root->name.c_str());
-    auto visual = buildCarryVisual(*root);
+    const auto model = isCrossbow(base) ? CarryModel::crossbow : isStaff(base) ? CarryModel::staff : CarryModel::ordinary;
+    auto visual = buildCarryVisual(*root,model);
     if (!visual.root) {
         SKSE::log::warn("Grab canceled for {:08X}: {}",item.id,visual.reason);
         return reset(&player,true);
@@ -367,6 +426,23 @@ void grab(RE::PlayerCharacter& player, const Settings& settings)
     item.boundsCenter = {0.5f*(min.x+max.x),0.5f*(min.y+max.y),0.5f*(min.z+max.z)};
     const auto x = max.x-min.x, y = max.y-min.y, z = max.z-min.z;
     item.boundsHalf = {0.5f*x,0.5f*y,0.5f*z};
+    item.gripProfile = carryGripProfile(*base);
+    if (isThrowableWeapon(base) || item.gripProfile==GripProfile::spear) {
+        if (item.gripProfile==GripProfile::standard) {
+            item.weaponGrip = weaponGrip(vec(item.boundsCenter),vec(item.boundsHalf)).value_or(WeaponGrip{});
+        } else {
+            const auto triangles = carryGripTriangles(*visual.root);
+            item.weaponGrip = fittedWeaponGrip(vec(item.boundsCenter),vec(item.boundsHalf),item.gripProfile,triangles)
+                .value_or(WeaponGrip{});
+            const auto grip = item.weaponGrip->handle;
+            SKSE::log::info("Fitted carry grip {:08X} at ({:.1f}, {:.1f}, {:.1f}), {} render triangles",
+                            item.base,grip.x,grip.y,grip.z,triangles.size());
+        }
+        const auto scale = root->world.scale;
+        item.weaponWorldScale = std::isfinite(scale) && scale>0.f ? scale : item.scale;
+        if (const auto* weapon = base->As<RE::TESObjectWEAP>())
+            item.dagger = weapon->GetWeaponType()==RE::WEAPON_TYPE::kOneHandDagger;
+    }
     if (base->GetFormType()!=RE::FormType::AlchemyItem) {
         // Orient slender rods with the palm while keeping bottles upright.
         if (x>2*std::max(y,z)) item.gripYaw = std::numbers::pi_v<float>/2;
@@ -419,8 +495,26 @@ bool dropOrLaunch(RE::PlayerCharacter& player, const Settings& settings, bool th
     const auto center = socket+centerOffset;
     const bool first = firstPerson();
     const bool firstPersonThrowing = thrown && first;
+    const bool firstPersonDropping = !thrown && first;
     RE::NiPointer<RE::NiNode> releaseNode;
     const char* releaseLabel = "hover socket";
+    const auto bounds = [&](const RE::NiMatrix3& rotation) {
+        return ReleaseBounds{vec(item.boundsHalf)*item.scale,
+            {vec(rotation*RE::NiPoint3{1.f,0.f,0.f}), vec(rotation*RE::NiPoint3{0.f,1.f,0.f}),
+             vec(rotation*RE::NiPoint3{0.f,0.f,1.f})}};
+    };
+    const auto setWorldRelease = [&](Vec newCenter, const RE::NiMatrix3& rotation) {
+        releaseNode.reset(RE::NiNode::Create());
+        if (!releaseNode) {
+            SKSE::log::warn("Could not prepare world release transform for {:08X}",item.id);
+            return false;
+        }
+        releaseNode->world = item.socket->world;
+        releaseNode->world.rotate = rotation;
+        socket = newCenter-vec(rotation*(item.boundsCenter*item.scale));
+        releaseNode->world.translate = point(socket);
+        return true;
+    };
     const auto moveSocket = [&](Vec newCenter) {
         const auto delta = newCenter-centerOffset-socket;
         item.socket->local.translate += (item.parent->world.rotate.Transpose()*point(delta)) /
@@ -429,45 +523,85 @@ bool dropOrLaunch(RE::PlayerCharacter& player, const Settings& settings, bool th
         socket = vec(item.socket->world.translate);
     };
     Vec velocity{};
-    const auto clear = [&](Vec releaseCenter) {
-        return (!thrown || (velocity.length()>1.f && !clipsThrower(player,releaseCenter,item.radius,velocity))) &&
-               clearRelease(player,releaseCenter,item.radius,velocity.unit());
-    };
     bool safe{};
-    if (firstPersonThrowing) {
+    const auto& socketRotation = item.socket->world.rotate;
+    if (firstPersonDropping) {
+        const auto box = bounds(socketRotation);
+        auto drop = firstPersonDropCenter(player,box,item.radius);
+        releaseLabel = "first-person drop in view";
+        if (!drop) {
+            drop = groundDropCenter(player,box,item.radius);
+            releaseLabel = "first-person drop near player";
+        }
+        if (drop) {
+            if (!setWorldRelease(*drop,socketRotation)) return false;
+            safe = true;
+        }
+    } else if (firstPersonThrowing) {
         if (const auto launch = firstPersonThrow(player,*target,center,item.radius,item.area,settings)) {
             // MoveToNode needs a world transform. A detached node gives it
             // that transform without reprojecting through the animated hand.
-            releaseNode.reset(RE::NiNode::Create());
-            if (!releaseNode) {
-                SKSE::log::warn("Could not prepare first-person release transform for {:08X}",item.id);
-                return false;
-            }
-            releaseNode->world = item.socket->world;
-            socket = launch->center-centerOffset;
-            releaseNode->world.translate = point(socket);
+            if (!setWorldRelease(launch->center,socketRotation)) return false;
             releaseLabel = launch->origin==FirstPersonOrigin::crosshair ?
                 "centered first-person release" : "first-person clearance point";
             velocity = launch->velocity;
             safe = true;
         }
-    } else {
-        if (thrown) velocity = launchVelocity(player,*target,socket,item.area,settings);
-        safe = clear(center);
-        if (!safe && first) {
-            for (int attempt=0; attempt<3 && !safe; ++attempt) {
-                const auto candidate = firstPersonReleaseCenter(player,center,item.radius,attempt);
-                if (!(safe = clear(candidate))) continue;
-                moveSocket(candidate);
-                SKSE::log::info("Used first-person release clearance for {:08X} (candidate {})",item.id,attempt+1);
+    } else if (thrown) {
+        velocity = launchVelocity(player,*target,socket,item.area,settings);
+        safe = velocity.length()>1.f && !clipsThrower(player,center,item.radius,velocity) &&
+               clearRelease(player,center,item.radius,velocity.unit());
+        if (!safe) {
+            if (const auto fallback = thirdPersonThrow(player,*target,center,centerOffset,bounds(socketRotation),
+                                                        item.radius,item.area,settings)) {
+                moveSocket(fallback->center);
+                velocity = fallback->velocity;
+                releaseLabel = "third-person bounds clearance";
+                safe = true;
             }
+        }
+    } else {
+        const auto* base = target->GetBaseObject();
+        const bool ammo = base && base->Is(RE::FormType::Ammo);
+        const bool equipment = base && base->Is(RE::FormType::Weapon,RE::FormType::Armor,RE::FormType::Ammo);
+        if (equipment && item.mesh) {
+            // Try the displayed weapon pose first, then the usual hover
+            // placement if the full-size reference cannot clear the player.
+            auto heldCenter = vec(item.socket->world*(item.boundsCenter*hoverScale(settings)));
+            auto dropRotation = socketRotation;
+            std::optional<Vec> drop;
+            if (item.weaponGrip) {
+                const auto shown = item.socket->world*item.mesh->local;
+                const auto shownCenter = vec(shown*item.boundsCenter);
+                drop = thirdPersonEquipmentDropCenter(player,shownCenter,bounds(shown.rotate),item.radius);
+                if (drop) {
+                    heldCenter = shownCenter;
+                    dropRotation = shown.rotate;
+                }
+            }
+            if (!drop) drop = thirdPersonEquipmentDropCenter(player,heldCenter,bounds(dropRotation),item.radius);
+            releaseLabel = "equipment drop at hand";
+            if (!drop && (ammo || hasEquipmentGroundDrop(*base))) {
+                drop = groundDropCenter(player,bounds(socketRotation),item.radius);
+                dropRotation = socketRotation;
+                releaseLabel = "equipment drop near player";
+            }
+            if (drop) {
+                if (!setWorldRelease(*drop,dropRotation)) return false;
+                SKSE::log::info("Equipment drop {:08X} adjusted {:.1f} game units from the visible hand position",
+                                item.id,(*drop-heldCenter).length());
+                safe = true;
+            }
+        } else {
+            safe = clearRelease(player,center,item.radius,{});
         }
     }
     if (!safe) {
         item.socket->local.translate = local;
         SKSE::log::info("Release obstructed for {:08X} in {} person (center {:.1f}, {:.1f}, {:.1f}, radius {:.1f})",
                         item.id,first ? "first" : "third",center.x,center.y,center.z,item.radius);
-        RE::DebugNotification(firstPersonThrowing ? "Throw Object: the throw path is obstructed."
+        RE::DebugNotification(firstPersonDropping ? "Throw Object: no clear drop space nearby." :
+                              firstPersonThrowing ? "Throw Object: the throw path is obstructed."
                                                   : "Throw Object: the hand position is obstructed.");
         return false;
     }
@@ -497,8 +631,10 @@ bool dropOrLaunch(RE::PlayerCharacter& player, const Settings& settings, bool th
         SKSE::log::warn("Release did not enable world reference {:08X}; retaining the carry state",item.id);
         return false;
     }
-    if (!initializeReleasedPhysics(player,*target,velocity,item.area,settings))
-        pending = {target->GetHandle(),releaseCell,releaseWorld,velocity,item.area,0.f};
+    const bool sneakingThrow = thrown && item.sneakingThrow;
+    const bool hiddenAtRelease = sneakingThrow && settings.reactions && hiddenSneaking(player);
+    if (!initializeReleasedPhysics(player,*target,velocity,item.area,sneakingThrow,hiddenAtRelease,settings))
+        pending = {target->GetHandle(),releaseCell,releaseWorld,velocity,item.area,0.f,sneakingThrow,hiddenAtRelease};
     detach();
     item = {};
     return true;
@@ -549,7 +685,8 @@ void update(RE::PlayerCharacter& player, float dt, const Settings& settings)
         if (!pending.handle || !target || target->IsDeleted() || target->IsDisabled() ||
             !sameCarryArea(pending.cell,pending.world,id(player.GetParentCell()),id(player.GetWorldspace())) ||
             !settings.enabled) pending = {};
-        else if (initializeReleasedPhysics(player,*target,pending.velocity,pending.area,settings)) pending = {};
+        else if (initializeReleasedPhysics(player,*target,pending.velocity,pending.area,pending.sneakingThrow,
+                                          pending.hiddenAtRelease,settings)) pending = {};
         else if (pending.elapsed>0.50f) {
             SKSE::log::warn("World physics initialization timed out for {:08X}; reference remains enabled",id(target.get()));
             pending = {};
@@ -680,6 +817,7 @@ void executeInput(RE::PlayerCharacter& player, const InputRequest& request, cons
     case Action::throwItem:
         if (phase==Phase::held) {
             phase = transition(phase,Event::requestThrow);
+            item.sneakingThrow = player.IsSneaking();
             elapsed = 0;
             actionStarted = false;
             markers.store(0);
@@ -841,6 +979,10 @@ void message(SKSE::MessagingInterface::Message* msg)
     case SKSE::MessagingInterface::kPostLoadGame:
         recover(false);
         carryPose(false);
+        if (msg->data) recoverInvestigationPackages();
+        break;
+    case SKSE::MessagingInterface::kSaveGame:
+        cancelDistractions();
         break;
     default: break;
     }
@@ -925,9 +1067,9 @@ void startLogging()
 
 extern "C" __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Version = [] {
     SKSE::PluginVersionData metadata{};
-    metadata.PluginVersion({0,0,15,0});
+    metadata.PluginVersion({0,3,9,3});
     metadata.PluginName("ThrowObject");
-    metadata.AuthorName("Throw Object");
+    metadata.AuthorName("Tsoxer");
     metadata.UsesAddressLibrary();
     metadata.UsesStructsPost629();
     metadata.MinimumRequiredXSEVersion({2,2,6,0});
@@ -940,7 +1082,7 @@ extern "C" __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadIn
     if (skse->RuntimeVersion()!=to::runtime || skse->IsEditor()) return false;
     SKSE::Init(skse);
     to::startLogging();
-    SKSE::log::info("Throw Object v0.0.15 DLL loaded for Skyrim Steam 1.6.1170");
+    SKSE::log::info("Throw Object v0.3.9 RC3 DLL loaded for Skyrim Steam 1.6.1170");
     to::loadSettings();
     auto* serialization = SKSE::GetSerializationInterface();
     auto* messaging = SKSE::GetMessagingInterface();

@@ -42,6 +42,8 @@ struct ToleranceCount {
     constexpr bool escalates() const { return hits>=limit; }
 };
 
+enum class ToleranceHit { ordinary, exhaust };
+
 constexpr std::uint32_t packTolerance(ToleranceCount count)
 {
     return std::uint32_t(count.limit) | (std::uint32_t(count.hits)<<8);
@@ -75,10 +77,11 @@ public:
     }
 
     template<class Roll>
-    ToleranceCount hit(std::uint32_t day, std::uint32_t actor, Roll roll)
+    ToleranceCount hit(std::uint32_t day, std::uint32_t actor, Roll roll, ToleranceHit hit=ToleranceHit::ordinary)
     {
         auto& count = observe(day,actor,roll);
-        if (count.hits<count.limit) ++count.hits;
+        if (hit==ToleranceHit::exhaust) count.hits = count.limit;
+        else if (count.hits<count.limit) ++count.hits;
         return count;
     }
 
@@ -108,7 +111,8 @@ inline std::optional<ToleranceMeterPlacement> placeToleranceMeter(int corner,flo
 }
 
 inline constexpr std::uint32_t toleranceRecord = 0x524C4F54;  // TOLR
-ToleranceReaction recordToleratedHit(RE::PlayerCharacter& player, RE::Actor& npc, const Settings& settings);
+ToleranceReaction recordToleratedHit(RE::PlayerCharacter& player, RE::Actor& npc, const Settings& settings,
+                                     ToleranceHit hit);
 void saveTolerance(const SKSE::SerializationInterface& archive);
 void loadTolerance(const SKSE::SerializationInterface& archive, std::uint32_t version, std::uint32_t length);
 void resetTolerance();
