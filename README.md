@@ -1,6 +1,6 @@
 # Throw Object - Animated Object Throwing
 
-**v0.3.9 RC3 source archive** Â· **Skyrim Special Edition / Anniversary Edition 1.6.1170 (Steam)** Â· [Nexus Mods page](https://www.nexusmods.com/skyrimspecialedition/mods/200504)
+**v0.3.9 RC3 source archive** | **Skyrim Special Edition / Anniversary Edition 1.6.1170 (Steam)** | [Nexus Mods page](https://www.nexusmods.com/skyrimspecialedition/mods/200504)
 
 Throw Object lets you pick up loose objects, carry them in your right hand, and throw them wherever you aim. Six custom third-person animations cover pickup, idle, walking, jogging, sprinting, and throwing. The mod handles first-person aiming, weight-based flight, impacts, and NPC reactions.
 
@@ -10,9 +10,9 @@ v0.3.9 RC3 supports pickup for crossbows with skinned world models. It builds a 
 
 ## Gameplay
 
-- **Carry and throw loose items.** Supported items include clutter, arrows, Riekling spears, one-handed swords, daggers, war axes, maces, pickaxes, woodcutterâ€™s axes, fishing rods, helmets, gloves, boots, staves, backpacks, and crossbows. World items need a compatible model and a single loaded Havok body.
+- **Carry and throw loose items.** Supported items include clutter, arrows, Riekling spears, one-handed swords, daggers, war axes, maces, pickaxes, woodcutter's axes, fishing rods, helmets, gloves, boots, staves, backpacks, and crossbows. World items need a compatible model and a single loaded Havok body.
 - **Throw by weight or melee damage.** Weight, shape, and impact speed affect flight and damage. Thrown one-handed weapons, staves, and crossbows tumble in flight. The optional 50% normal-swing damage setting is enabled by default and applies to one-handed melee weapons.
-- **Distract NPCs while hidden.** With the sneak eye closed, a throw can draw eligible NPCs to the landing spot. They can leave furniture, kneel to inspect for **4â€“7 seconds** by default, and then resume their routines. Nearby misses with a sword, dagger, war axe, or mace can draw an investigation. A direct weapon hit triggers the combat response for the NPC it strikes.
+- **Distract NPCs while hidden.** With the sneak eye closed, a throw can draw eligible NPCs to the landing spot. They can leave furniture, kneel to inspect for **4-7 seconds** by default, and then resume their routines. Nearby misses with a sword, dagger, war axe, or mace can draw an investigation. A direct weapon hit triggers the combat response for the NPC it strikes.
 - **Track daily tolerance.** Eligible non-hostile NPCs have a daily hit threshold. Ordinary thrown objects can build toward it. Direct weapon hits can fill it immediately. The optional tolerance meter shows the current count and threshold.
 
 ## Project structure
@@ -32,7 +32,7 @@ CHANGELOG.txt                 Exact release history supplied by Tsoxer
 
 `src/plugin.cpp` handles input, item ownership, animation events, and SKSE serialization. `src/physics.cpp` implements release, flight, and impact behavior. `src/carry_visual.cpp` builds held visuals, and `src/equipment.cpp` classifies equipment and handles melee-based damage. `src/distraction.cpp` manages NPC investigations, `src/suspicion.cpp` plays installed Skyrim voice lines, and `src/tolerance.cpp` tracks daily NPC tolerance. `src/held_recovery.hpp` handles held-item recovery on load.
 
-The animation project contains all six editable actions and the matching local browser viewer. Pickup attaches the object at **frame 22**, and Throw releases it at **frame 15**, both at **30 FPS**. [Animation project notes](animation/ThrowObjectAnims9/README.md) Â· [Pose calibration](ANIMATION_CALIBRATION.md)
+The animation project contains all six editable actions and the matching local browser viewer. Pickup attaches the object at **frame 22**, and Throw releases it at **frame 15**, both at **30 FPS**. [Animation project notes](animation/ThrowObjectAnims9/README.md) | [Pose calibration](ANIMATION_CALIBRATION.md)
 
 ## Runtime requirements
 
@@ -96,10 +96,10 @@ See [TESTING.md](TESTING.md) for the verification and in-game test cases.
 
 ## Credits
 
-**Author, design, direction, and in-game testing** Â· Tsoxer
+**Author, design, direction, and in-game testing** | Tsoxer
 
-**Programming and debugging** Â· Codex (OpenAI)
+**Programming and debugging** | Codex (OpenAI)
 
 ## Licensing
 
-See the published permissions for the original Throw Object material and the separate notices for its dependencies. [Nexus Mods permissions](https://www.nexusmods.com/skyrimspecialedition/mods/200504#permissions) Â· [Third-party notices](THIRD_PARTY_NOTICES.md)
+See the published permissions for the original Throw Object material and the separate notices for its dependencies. [Nexus Mods permissions](https://www.nexusmods.com/skyrimspecialedition/mods/200504#permissions) | [Third-party notices](THIRD_PARTY_NOTICES.md)
